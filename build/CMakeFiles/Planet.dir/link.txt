@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/Planet.dir/src/main.cpp.o -o Planet  /usr/lib/x86_64-linux-gnu/libSDL2.so 
