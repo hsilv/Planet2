@@ -4,6 +4,8 @@
 #include <sstream>
 #include <stdio.h>
 #include "FastNoise/FastNoise.h"
+#include "Noises/earth.hpp"
+#include <tbb/tbb.h>
 
 SDL_Window *window = nullptr;
 SDL_Renderer *renderer = nullptr;
@@ -42,26 +44,11 @@ int main(int argc, char *argv[])
   }
 
   bool running = true;
-  long terrainSeed = random();
-  FastNoiseLite noise;
-  noise.SetNoiseType(FastNoiseLite::NoiseType_Cellular);
-  noise.SetSeed(terrainSeed);
-  noise.SetFrequency(0.010);
-  noise.SetFractalType(FastNoiseLite::FractalType_None);
-  noise.SetCellularDistanceFunction(FastNoiseLite::CellularDistanceFunction_Hybrid);
-  noise.SetCellularReturnType(FastNoiseLite::CellularReturnType_CellValue);
-  noise.SetCellularJitter(1.00f);
-  noise.SetDomainWarpType(FastNoiseLite::DomainWarpType_OpenSimplex2);
-  noise.SetDomainWarpAmp(100.0f);
-  noise.SetFractalType(FastNoiseLite::FractalType_DomainWarpIndependent);
-  noise.SetFractalOctaves(8);
-  noise.SetFractalLacunarity(2.20f);
-  noise.SetFractalGain(0.60f);
-  FastNoiseLite warp;
   while (running)
   {
     a++;
     startFPS();
+    printf("Número de núcleos %i \n", 5);
 
     SDL_Event event;
     while (SDL_PollEvent(&event))
@@ -72,18 +59,15 @@ int main(int argc, char *argv[])
       }
     }
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-    SDL_RenderPresent(renderer);
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
-    for (int x = 0; x < 620; x++)
+    SDL_RenderClear(renderer);
+    setTerrainNoise();
+    for (int x = a; x < 620 + a; x++)
     {
-      for (int y = 0; y < 480; y++)
+      for (int y = a; y < 480 + a; y++)
       {
-        float newX = static_cast<float>(x);
-        float newY = static_cast<float>(y);
-        noise.DomainWarp(newX, newY);
-        float color = noise.GetNoise(newX, newY);
-        SDL_SetRenderDrawColor(renderer, color * 255, color * 255, color * 255, 0);
-        SDL_RenderDrawPoint(renderer, x, y);
+        float color = getTerrainNoise(x, y);
+        SDL_SetRenderDrawColor(renderer, color*255, color*255, color*255, SDL_ALPHA_OPAQUE);
+        SDL_RenderDrawPoint(renderer, x - a, y - a);
       }
     }
     SDL_RenderPresent(renderer);

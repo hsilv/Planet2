@@ -92,6 +92,7 @@ Planet_EXTERNAL_OBJECTS =
 
 Planet: CMakeFiles/Planet.dir/src/main.cpp.o
 Planet: CMakeFiles/Planet.dir/build.make
+Planet: /usr/lib/x86_64-linux-gnu/libtbb.so.12.8
 Planet: /usr/lib/x86_64-linux-gnu/libSDL2.so
 Planet: CMakeFiles/Planet.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/silva/Projects/Graficas/Planet/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable Planet"

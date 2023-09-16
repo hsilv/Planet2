@@ -1,8 +1,0 @@
-[
-{
-  "directory": "/home/silva/Projects/Graficas/Planet/build",
-  "command": "/usr/bin/g++ -DTBB_USE_DEBUG -I/home/silva/Projects/Graficas/Planet/include -isystem /usr/include/SDL2 -g -o CMakeFiles/Planet.dir/src/main.cpp.o -c /home/silva/Projects/Graficas/Planet/src/main.cpp",
-  "file": "/home/silva/Projects/Graficas/Planet/src/main.cpp",
-  "output": "CMakeFiles/Planet.dir/src/main.cpp.o"
-}
-]

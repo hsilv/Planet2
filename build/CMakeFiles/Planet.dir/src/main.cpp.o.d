@@ -290,4 +290,186 @@ CMakeFiles/Planet.dir/src/main.cpp.o: \
  /usr/include/c++/12/bits/istream.tcc \
  /home/silva/Projects/Graficas/Planet/src/fps/fps.h \
  /usr/include/c++/12/sstream /usr/include/c++/12/bits/sstream.tcc \
- /home/silva/Projects/Graficas/Planet/src/FastNoise/FastNoise.h
+ /home/silva/Projects/Graficas/Planet/src/FastNoise/FastNoise.h \
+ /home/silva/Projects/Graficas/Planet/src/Noises/earth.hpp \
+ /home/silva/Projects/Graficas/Planet/src/Noises/../FastNoise/FastNoise.h \
+ /usr/include/tbb/tbb.h /usr/include/oneapi/tbb.h \
+ /usr/include/oneapi/tbb/blocked_range.h /usr/include/c++/12/cstddef \
+ /usr/include/oneapi/tbb/detail/_range_common.h \
+ /usr/include/oneapi/tbb/detail/_config.h \
+ /usr/include/oneapi/tbb/detail/_export.h \
+ /usr/include/oneapi/tbb/detail/_utils.h /usr/include/c++/12/atomic \
+ /usr/include/c++/12/bits/atomic_base.h \
+ /usr/include/c++/12/bits/atomic_lockfree_defines.h \
+ /usr/include/oneapi/tbb/detail/_assert.h \
+ /usr/include/oneapi/tbb/detail/_machine.h /usr/include/c++/12/climits \
+ /usr/lib/gcc/x86_64-linux-gnu/12/include/limits.h \
+ /usr/lib/gcc/x86_64-linux-gnu/12/include/syslimits.h \
+ /usr/include/limits.h /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/local_lim.h \
+ /usr/include/linux/limits.h \
+ /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/uio_lim.h /usr/include/c++/12/thread \
+ /usr/include/c++/12/bits/std_thread.h /usr/include/c++/12/tuple \
+ /usr/include/c++/12/bits/uses_allocator.h \
+ /usr/include/c++/12/bits/unique_ptr.h \
+ /usr/include/c++/12/bits/this_thread_sleep.h \
+ /usr/include/c++/12/bits/chrono.h /usr/include/c++/12/ratio \
+ /usr/include/c++/12/ctime /usr/include/c++/12/bits/parse_numbers.h \
+ /usr/include/c++/12/iterator /usr/include/c++/12/bits/stream_iterator.h \
+ /usr/include/oneapi/tbb/detail/_namespace_injection.h \
+ /usr/include/oneapi/tbb/version.h \
+ /usr/include/oneapi/tbb/detail/_config.h \
+ /usr/include/oneapi/tbb/blocked_range2d.h \
+ /usr/include/oneapi/tbb/blocked_range.h \
+ /usr/include/oneapi/tbb/blocked_range3d.h \
+ /usr/include/oneapi/tbb/cache_aligned_allocator.h \
+ /usr/include/oneapi/tbb/detail/_utils.h /usr/include/c++/12/utility \
+ /usr/include/c++/12/bits/stl_relops.h \
+ /usr/include/c++/12/memory_resource /usr/include/c++/12/vector \
+ /usr/include/c++/12/bits/stl_uninitialized.h \
+ /usr/include/c++/12/bits/stl_vector.h \
+ /usr/include/c++/12/bits/stl_bvector.h \
+ /usr/include/c++/12/bits/vector.tcc /usr/include/c++/12/shared_mutex \
+ /usr/include/c++/12/bits/std_mutex.h /usr/include/c++/12/bits/align.h \
+ /usr/include/c++/12/bit /usr/include/c++/12/bits/uses_allocator_args.h \
+ /usr/include/oneapi/tbb/combinable.h \
+ /usr/include/oneapi/tbb/enumerable_thread_specific.h \
+ /usr/include/oneapi/tbb/detail/_assert.h \
+ /usr/include/oneapi/tbb/detail/_template_helpers.h \
+ /usr/include/c++/12/memory /usr/include/c++/12/bits/stl_tempbuf.h \
+ /usr/include/c++/12/bits/stl_raw_storage_iter.h \
+ /usr/include/c++/12/bits/shared_ptr.h \
+ /usr/include/c++/12/bits/shared_ptr_base.h \
+ /usr/include/c++/12/bits/allocated_ptr.h \
+ /usr/include/c++/12/ext/aligned_buffer.h \
+ /usr/include/c++/12/ext/concurrence.h \
+ /usr/include/c++/12/bits/shared_ptr_atomic.h \
+ /usr/include/c++/12/backward/auto_ptr.h \
+ /usr/include/c++/12/pstl/glue_memory_defs.h \
+ /usr/include/c++/12/pstl/execution_defs.h \
+ /usr/include/oneapi/tbb/detail/_aligned_space.h \
+ /usr/include/oneapi/tbb/detail/_template_helpers.h \
+ /usr/include/oneapi/tbb/concurrent_vector.h \
+ /usr/include/oneapi/tbb/detail/_allocator_traits.h \
+ /usr/include/oneapi/tbb/detail/_segment_table.h \
+ /usr/include/oneapi/tbb/detail/_allocator_traits.h \
+ /usr/include/oneapi/tbb/detail/_exception.h /usr/include/c++/12/cstring \
+ /usr/include/oneapi/tbb/detail/_containers_helpers.h \
+ /usr/include/c++/12/functional /usr/include/c++/12/bits/std_function.h \
+ /usr/include/c++/12/unordered_map /usr/include/c++/12/bits/hashtable.h \
+ /usr/include/c++/12/bits/hashtable_policy.h \
+ /usr/include/c++/12/bits/enable_special_members.h \
+ /usr/include/c++/12/bits/node_handle.h \
+ /usr/include/c++/12/bits/unordered_map.h \
+ /usr/include/c++/12/bits/erase_if.h /usr/include/c++/12/array \
+ /usr/include/c++/12/compare /usr/include/c++/12/bits/stl_algo.h \
+ /usr/include/c++/12/bits/algorithmfwd.h \
+ /usr/include/c++/12/bits/stl_heap.h \
+ /usr/include/c++/12/bits/uniform_int_dist.h \
+ /usr/include/oneapi/tbb/cache_aligned_allocator.h \
+ /usr/include/c++/12/algorithm \
+ /usr/include/c++/12/pstl/glue_algorithm_defs.h \
+ /usr/include/oneapi/tbb/tbb_allocator.h \
+ /usr/include/oneapi/tbb/detail/_utils.h \
+ /usr/include/oneapi/tbb/profiling.h \
+ /usr/include/oneapi/tbb/detail/_string_resource.h \
+ /usr/include/oneapi/tbb/task.h /usr/include/oneapi/tbb/detail/_task.h \
+ /usr/include/oneapi/tbb/detail/_small_object_pool.h \
+ /usr/include/oneapi/tbb/profiling.h /usr/include/c++/12/mutex \
+ /usr/include/c++/12/bits/unique_lock.h \
+ /usr/include/oneapi/tbb/concurrent_hash_map.h \
+ /usr/include/oneapi/tbb/detail/_hash_compare.h \
+ /usr/include/oneapi/tbb/detail/_containers_helpers.h \
+ /usr/include/oneapi/tbb/spin_rw_mutex.h \
+ /usr/include/oneapi/tbb/detail/_mutex_common.h \
+ /usr/include/oneapi/tbb/detail/_scoped_lock.h \
+ /usr/include/oneapi/tbb/detail/_rtm_rw_mutex.h \
+ /usr/include/oneapi/tbb/spin_rw_mutex.h \
+ /usr/include/oneapi/tbb/collaborative_call_once.h \
+ /usr/include/oneapi/tbb/task_arena.h \
+ /usr/include/oneapi/tbb/detail/_attach.h \
+ /usr/include/oneapi/tbb/detail/_exception.h \
+ /usr/include/oneapi/tbb/detail/_small_object_pool.h \
+ /usr/include/oneapi/tbb/detail/_task_handle.h \
+ /usr/include/oneapi/tbb/detail/_task.h /usr/include/oneapi/tbb/info.h \
+ /usr/include/oneapi/tbb/task_group.h \
+ /usr/include/oneapi/tbb/detail/_intrusive_list_node.h \
+ /usr/include/oneapi/tbb/concurrent_priority_queue.h \
+ /usr/include/oneapi/tbb/detail/_aggregator.h \
+ /usr/include/oneapi/tbb/concurrent_queue.h \
+ /usr/include/oneapi/tbb/detail/_concurrent_queue_base.h \
+ /usr/include/oneapi/tbb/spin_mutex.h \
+ /usr/include/oneapi/tbb/detail/_rtm_mutex.h \
+ /usr/include/oneapi/tbb/cache_aligned_allocator.h \
+ /usr/include/oneapi/tbb/concurrent_unordered_map.h \
+ /usr/include/oneapi/tbb/detail/_concurrent_unordered_base.h \
+ /usr/include/oneapi/tbb/detail/_range_common.h \
+ /usr/include/oneapi/tbb/detail/_segment_table.h \
+ /usr/include/oneapi/tbb/detail/_hash_compare.h \
+ /usr/include/oneapi/tbb/detail/_node_handle.h \
+ /usr/include/oneapi/tbb/concurrent_unordered_set.h \
+ /usr/include/oneapi/tbb/concurrent_map.h \
+ /usr/include/oneapi/tbb/detail/_concurrent_skip_list.h \
+ /usr/include/oneapi/tbb/enumerable_thread_specific.h \
+ /usr/include/c++/12/random /usr/include/c++/12/bits/random.h \
+ /usr/include/x86_64-linux-gnu/c++/12/bits/opt_random.h \
+ /usr/include/c++/12/bits/random.tcc /usr/include/c++/12/numeric \
+ /usr/include/c++/12/bits/stl_numeric.h \
+ /usr/include/c++/12/pstl/glue_numeric_defs.h \
+ /usr/include/oneapi/tbb/concurrent_set.h \
+ /usr/include/oneapi/tbb/concurrent_vector.h \
+ /usr/include/oneapi/tbb/enumerable_thread_specific.h \
+ /usr/include/oneapi/tbb/flow_graph.h \
+ /usr/include/oneapi/tbb/spin_mutex.h \
+ /usr/include/oneapi/tbb/null_mutex.h \
+ /usr/include/oneapi/tbb/null_rw_mutex.h \
+ /usr/include/oneapi/tbb/detail/_pipeline_filters.h \
+ /usr/include/oneapi/tbb/detail/_pipeline_filters_deduction.h \
+ /usr/include/oneapi/tbb/tbb_allocator.h /usr/include/c++/12/list \
+ /usr/include/c++/12/bits/stl_list.h /usr/include/c++/12/bits/list.tcc \
+ /usr/include/c++/12/queue /usr/include/c++/12/deque \
+ /usr/include/c++/12/bits/stl_deque.h /usr/include/c++/12/bits/deque.tcc \
+ /usr/include/c++/12/bits/stl_queue.h \
+ /usr/include/oneapi/tbb/detail/_flow_graph_impl.h \
+ /usr/include/oneapi/tbb/task_group.h \
+ /usr/include/oneapi/tbb/task_arena.h \
+ /usr/include/oneapi/tbb/flow_graph_abstractions.h \
+ /usr/include/oneapi/tbb/concurrent_priority_queue.h \
+ /usr/include/oneapi/tbb/detail/_flow_graph_trace_impl.h \
+ /usr/include/oneapi/tbb/detail/_flow_graph_body_impl.h \
+ /usr/include/oneapi/tbb/detail/_flow_graph_cache_impl.h \
+ /usr/include/oneapi/tbb/detail/_flow_graph_types_impl.h \
+ /usr/include/oneapi/tbb/detail/_flow_graph_node_impl.h \
+ /usr/include/oneapi/tbb/detail/_flow_graph_item_buffer_impl.h \
+ /usr/include/oneapi/tbb/detail/_aligned_space.h \
+ /usr/include/oneapi/tbb/detail/_flow_graph_join_impl.h \
+ /usr/include/oneapi/tbb/detail/_flow_graph_tagged_buffer_impl.h \
+ /usr/include/oneapi/tbb/detail/_flow_graph_indexer_impl.h \
+ /usr/include/oneapi/tbb/detail/_flow_graph_types_impl.h \
+ /usr/include/oneapi/tbb/detail/_flow_graph_node_set_impl.h \
+ /usr/include/oneapi/tbb/detail/_flow_graph_nodes_deduction.h \
+ /usr/include/oneapi/tbb/global_control.h /usr/include/oneapi/tbb/info.h \
+ /usr/include/oneapi/tbb/null_mutex.h \
+ /usr/include/oneapi/tbb/null_rw_mutex.h \
+ /usr/include/oneapi/tbb/parallel_for.h \
+ /usr/include/oneapi/tbb/partitioner.h \
+ /usr/include/oneapi/tbb/parallel_for_each.h \
+ /usr/include/oneapi/tbb/parallel_for.h \
+ /usr/include/oneapi/tbb/parallel_invoke.h \
+ /usr/include/oneapi/tbb/parallel_pipeline.h \
+ /usr/include/oneapi/tbb/parallel_reduce.h \
+ /usr/include/oneapi/tbb/parallel_scan.h \
+ /usr/include/oneapi/tbb/parallel_sort.h \
+ /usr/include/oneapi/tbb/partitioner.h \
+ /usr/include/oneapi/tbb/queuing_mutex.h \
+ /usr/include/oneapi/tbb/queuing_rw_mutex.h \
+ /usr/include/oneapi/tbb/spin_mutex.h \
+ /usr/include/oneapi/tbb/spin_rw_mutex.h /usr/include/oneapi/tbb/task.h \
+ /usr/include/oneapi/tbb/task_arena.h \
+ /usr/include/oneapi/tbb/task_group.h \
+ /usr/include/oneapi/tbb/task_scheduler_observer.h \
+ /usr/include/oneapi/tbb/tbb_allocator.h \
+ /usr/include/oneapi/tbb/tick_count.h /usr/include/c++/12/chrono \
+ /usr/include/oneapi/tbb/version.h
