@@ -6,10 +6,20 @@
 #include "FastNoise/FastNoise.h"
 #include "Noises/earth.hpp"
 #include <tbb/tbb.h>
+#include <glm/glm.hpp>
+#include "obj.h"
+#include "uniform/uniform.h"
+#include "matrixes/matrixes.hpp"
+#include "framebuffer/framebuffer.h"
+
+float angle = 3.14f / 3.0f;
+Uniforms uniform;
+std::vector<glm::vec3> vertexes;
+std::vector<glm::vec3> normals;
+std::vector<glm::vec3> originals;
 
 SDL_Window *window = nullptr;
 SDL_Renderer *renderer = nullptr;
-int a = 0;
 
 bool setup(uint16_t SCREEN_WIDTH, uint16_t SCREEN_HEIGHT)
 {
@@ -42,13 +52,17 @@ int main(int argc, char *argv[])
   {
     return 1;
   }
-
+  setTerrainNoise(rand(), rand());
+  loadObj("./models/sphere.obj", vertexes, normals, originals);
   bool running = true;
   while (running)
   {
-    a++;
     startFPS();
-    printf("Número de núcleos %i \n", 5);
+
+    uniform.model = createModelMatrix(glm::vec3(5.0f, 4.0f, 0.0f), glm::vec3(0.42f * 2.25, 0.5f * 2.25, 0.5f * 2.25), glm::vec3(0.0f, 1.0f, 0.0f), angle += 1);
+    uniform.view = createViewMatrix(glm::vec3(0, 0, -5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+    uniform.projection = createProjectionMatrix(620, 480);
+    uniform.viewport = createViewportMatrix(620, 480);
 
     SDL_Event event;
     while (SDL_PollEvent(&event))
@@ -59,18 +73,10 @@ int main(int argc, char *argv[])
       }
     }
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+    clearFrameBuffer();
     SDL_RenderClear(renderer);
-    setTerrainNoise();
-    for (int x = a; x < 620 + a; x++)
-    {
-      for (int y = a; y < 480 + a; y++)
-      {
-        float color = getTerrainNoise(x, y);
-        SDL_SetRenderDrawColor(renderer, color*255, color*255, color*255, SDL_ALPHA_OPAQUE);
-        SDL_RenderDrawPoint(renderer, x - a, y - a);
-      }
-    }
-    SDL_RenderPresent(renderer);
+    renderTexture(renderer);
+    renderBuffer(renderer);
     endFPS(window);
   }
 
