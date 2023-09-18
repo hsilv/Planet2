@@ -1,17 +1,28 @@
 #ifndef FRAMEBUFFER_H
 #define FRAMEBUFFER_H
 
+#include <tbb/tbb.h>
 #include <stdio.h>
 #include <array>
 #include <mutex>
 #include "../fragment/fragment.h"
 #include "../color/color.h"
+#include <vector>
+#include "../uniform/uniform.h"
+#include "../vertex/vertex3.h"
+#include "../shader/vertexShader.hpp"
+#include "../shader/assembly.hpp"
+#include "../shader/fragmentShader.hpp"
 #include "SDL.h"
 
 Color clearColor(0, 0, 0);
 Color currentColor(0, 0, 0);
-constexpr size_t SCREEN_WIDTH = 620;
-constexpr size_t SCREEN_HEIGHT = 480;
+constexpr size_t SCREEN_WIDTH = 1200;
+constexpr size_t SCREEN_HEIGHT = 800;
+std::mutex pointMutex;
+
+#include "../shader/triangle.hpp"
+#include "../shader/rasterization.hpp"
 
 struct BO
 {
@@ -31,12 +42,35 @@ void clearFrameBuffer()
 
 void point(Fragment f)
 {
-    std::lock_guard<std::mutex> lock(mutexes[f.position.y * SCREEN_WIDTH + f.position.x]);
-
-    if (f.position.z < frameBuffer[f.position.y * SCREEN_WIDTH + f.position.x].z)
+    if (f.position.x >= 0 && f.position.x < SCREEN_WIDTH && f.position.y >= 0 && f.position.y < SCREEN_HEIGHT)
     {
-        frameBuffer[f.position.y * SCREEN_WIDTH + f.position.x] = BO{f.color, static_cast<uint16_t>(f.position.z)};
+        std::lock_guard<std::mutex> lock(mutexes[f.position.y * SCREEN_WIDTH + f.position.x]);
+        if (f.position.z < frameBuffer[f.position.y * SCREEN_WIDTH + f.position.x].z)
+        {
+            frameBuffer[f.position.y * SCREEN_WIDTH + f.position.x] = BO{f.color, static_cast<uint16_t>(f.position.z)};
+        }
     }
+}
+
+void render(std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, std::vector<glm::vec3> &text, Uniforms &u, uint8_t textIndex)
+{
+    std::vector<Fragment> globalFrag;
+
+    std::vector<Vertex> transformed(vertices.size());
+
+    tbb::parallel_for(size_t(0), vertices.size(), [&](size_t i)
+                      {
+        Vertex vertex = {vertices[i], normals[i], text[i], Color(0.6f, 0.6f, 0.6f)};
+        transformed[i] = vertexShader(vertex, u); });
+
+    std::vector<std::vector<Vertex>> triangles = primitiveAssembly(transformed);
+
+    tbb::concurrent_vector<Fragment> frags = rasterize(triangles);
+
+    tbb::parallel_for(size_t(0), frags.size(), [&](size_t i){
+        Fragment frag = fragmentShader(frags[i], textIndex);
+        point(frag);
+    });
 }
 
 void renderBuffer(SDL_Renderer *renderer)

@@ -9,6 +9,8 @@ struct Fragment
 {
     glm::vec3 position;
     Color color;
+    float intensity;
+    glm::vec3 original;
 };
 
 #endif

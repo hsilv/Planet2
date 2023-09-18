@@ -1,3 +1,0 @@
-/home/silva/Projects/Graficas/Planet/build/CMakeFiles/Planet.dir
-/home/silva/Projects/Graficas/Planet/build/CMakeFiles/edit_cache.dir
-/home/silva/Projects/Graficas/Planet/build/CMakeFiles/rebuild_cache.dir
