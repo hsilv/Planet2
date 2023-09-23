@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include "FastNoise/FastNoise.h"
 #include "Noises/earth.hpp"
+#include "Noises/jupiter.hpp"
 #include <tbb/tbb.h>
 #include <glm/glm.hpp>
 #include "obj.h"
@@ -21,8 +22,11 @@ std::vector<glm::vec3> vertexes2;
 std::vector<glm::vec3> normals2;
 std::vector<glm::vec3> originals2;
 
+glm::vec3 eye = glm::vec3(0, 5, 0.10f);
+glm::vec3 center = glm::vec3(0, 0, 0);
+
 std::vector<Fragment> stars;
-int numStars = 650;
+int numStars = 1500;
 
 float moonAxisX = 1.5;
 float moonAxisZ = 1.5;
@@ -62,6 +66,7 @@ int main(int argc, char *argv[])
     return 1;
   }
   setTerrainNoise(rand(), rand(), rand());
+  SetJupiterNoise();
   loadObj("./models/sphere.obj", vertexes, normals, originals);
   vertexes2 = vertexes;
   normals2 = normals;
@@ -71,7 +76,7 @@ int main(int argc, char *argv[])
   {
     float x = static_cast<float>(rand() % SCREEN_WIDTH);
     float y = static_cast<float>(rand() % SCREEN_HEIGHT);
-    float z = INT16_MAX-1;
+    float z = INT16_MAX - 1;
 
     Color color(210, 210, 210);
 
@@ -83,35 +88,80 @@ int main(int argc, char *argv[])
   {
     startFPS();
     angle += 1;
+    /*     eye.y += 0.05f; */
 
     uniform.model = createModelMatrix(glm::vec3(0.0f, -0.25f, 0.0f), glm::vec3(0.7f / 2.5f, 1.0f / 2.5f, 1.0f / 2.5f), glm::vec3(0.0f, 1.0f, 0.0f), angle + 0.5);
-    uniform.view = createViewMatrix(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+    uniform.view = createViewMatrix(eye, center, glm::vec3(0, 1, 0));
     uniform.projection = createProjectionMatrix(1200, 800);
     uniform.viewport = createViewportMatrix(1200, 800);
 
     SDL_Event event;
+
     while (SDL_PollEvent(&event))
     {
       if (event.type == SDL_QUIT)
       {
         running = false;
       }
+      else
+      {
+        switch (event.type)
+        {
+        case SDL_KEYDOWN:
+          switch (event.key.keysym.sym)
+          {
+          case SDLK_UP:
+            eye.z += 0.05f;
+            center.z += 0.05f;
+            break;
+          case SDLK_DOWN:
+            eye.z -= 0.05f;
+            center.z -= 0.05f;
+            break;
+          case SDLK_RIGHT:
+            eye.x -= 0.05f;
+            center.x -= 0.05f;
+            break;
+          case SDLK_LEFT:
+            eye.x += 0.05f;
+            center.x += 0.05f;
+            break;
+          case SDLK_PAGEUP:
+            eye.y += 0.05f;
+            break;
+          case SDLK_PAGEDOWN:
+            eye.y -= 0.05f;
+            break;
+          case SDLK_i:
+            eye.z += 0.05f;
+            break;
+          case SDLK_k:
+            eye.z -= 0.05f;
+            break;
+          case SDLK_r:
+            eye = glm::vec3(0, 5, 0.10f);
+            center = glm::vec3(0, 0, 0);
+            break;
+          }
+        }
+      }
     }
+
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     clearFrameBuffer();
     SDL_RenderClear(renderer);
 
-    render(vertexes, normals, originals, uniform, 0);
+    render(vertexes, normals, originals, uniform, 1);
 
     uniform.model = createModelMatrix(glm::vec3(moonAxisX * sin(0.05 * angle), -0.25f, moonAxisZ * cos(0.05 * angle)), glm::vec3(0.63f / 8.0f, 1.0f / 8.0f, 1.0f / 8.0f), glm::vec3(0.0f, 1.0f, 0.0f), angle);
-    uniform.view = createViewMatrix(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+    uniform.view = createViewMatrix(eye, center, glm::vec3(0, 1, 0));
     uniform.projection = createProjectionMatrix(1200, 800);
     uniform.viewport = createViewportMatrix(1200, 800);
 
     render(vertexes2, normals2, originals2, uniform, 2);
 
-    tbb::parallel_for(size_t(0), stars.size(), [&](size_t i)
-                      { point(stars[i]); });
+    /*     tbb::parallel_for(size_t(0), stars.size(), [&](size_t i)
+                          { point(stars[i]); }); */
 
     renderBuffer(renderer);
     endFPS(window);

@@ -27,10 +27,10 @@ std::mutex pointMutex;
 struct BO
 {
     Color color;
-    uint16_t z;
+    long z;
 };
 
-BO cleared = {clearColor, INT16_MAX};
+BO cleared = {clearColor, LONG_MAX};
 
 std::array<BO, SCREEN_WIDTH * SCREEN_HEIGHT> frameBuffer;
 std::array<std::mutex, SCREEN_WIDTH * SCREEN_HEIGHT> mutexes;
@@ -47,7 +47,7 @@ void point(Fragment f)
         std::lock_guard<std::mutex> lock(mutexes[f.position.y * SCREEN_WIDTH + f.position.x]);
         if (f.position.z < frameBuffer[f.position.y * SCREEN_WIDTH + f.position.x].z)
         {
-            frameBuffer[f.position.y * SCREEN_WIDTH + f.position.x] = BO{f.color, static_cast<uint16_t>(f.position.z)};
+            frameBuffer[f.position.y * SCREEN_WIDTH + f.position.x] = BO{f.color, static_cast<long>(f.position.z)};
         }
     }
 }

@@ -58,7 +58,7 @@ std::vector<Fragment> triangle(Vertex a, Vertex b, Vertex c)
             float v = bar.first;
             float u = bar.second;
 
-            float minbar = 1e-10;
+            float minbar = 1e-50;
 
             if (w < minbar || v < minbar || u < minbar)
                 continue;

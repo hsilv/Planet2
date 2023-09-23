@@ -5,6 +5,7 @@
 #include "../FastNoise/FastNoise.h"
 #include "../color/color.h"
 #include <tbb/tbb.h>
+#include <array>
 
 long terrainSeed;
 long cloudSeed;

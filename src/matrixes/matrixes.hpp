@@ -42,7 +42,7 @@ glm::mat4 createProjectionMatrix(int wWidth, int wHeight)
     float fovInDegrees = 45.0f;
     float aspectRatio = wWidth / wHeight;
     float nearClip = 0.1f;
-    float farClip = 100.0f;
+    float farClip = 250.0f;
 
     perspective = glm::perspective(glm::radians(fovInDegrees), aspectRatio, nearClip, farClip);
 
