@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
+#include "../uniform/uniform.h"
 
 void printMatrix(glm::mat4 matrix)
 {
@@ -15,7 +16,7 @@ void printMatrix(glm::mat4 matrix)
     printf("] \n");
 }
 
-glm::mat4 createModelMatrix(glm::vec3 translateV, glm::vec3 scaleV, glm::vec3 rotationV, float rotationD)
+modelMatrix createModelMatrix(glm::vec3 translateV, glm::vec3 scaleV, glm::vec3 rotationV, float rotationD)
 {
     glm::mat4 translation = glm::mat4(1);
     translation = glm::translate(translation, translateV);
@@ -26,7 +27,7 @@ glm::mat4 createModelMatrix(glm::vec3 translateV, glm::vec3 scaleV, glm::vec3 ro
     glm::mat4 rotation = glm::mat4(1);
     rotation = glm::rotate(rotation, glm::radians(rotationD), rotationV);
 
-    return translation * scale * rotation;
+    return modelMatrix{translation, scale, rotation, translation * scale * rotation};
 }
 
 glm::mat4 createViewMatrix(glm::vec3 eye, glm::vec3 lookPoint, glm::vec3 up)

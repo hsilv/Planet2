@@ -71,6 +71,34 @@ void render(std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, s
         Fragment frag = fragmentShader(frags[i], textIndex);
         point(frag);
     });
+
+    setMoonOrbit();
+
+    resetDimens();
+
+    std::vector<Fragment> mOrbit = getMoonOrbit();
+
+    tbb::parallel_for(size_t(0), mOrbit.size(), [&](size_t i){
+        point(mOrbit[i]);
+    });
+}
+
+tbb::concurrent_vector<Fragment> getRenderFrags(std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, std::vector<glm::vec3> &text, Uniforms &u, uint8_t textIndex)
+{
+    std::vector<Fragment> globalFrag;
+
+    std::vector<Vertex> transformed(vertices.size());
+
+    tbb::parallel_for(size_t(0), vertices.size(), [&](size_t i)
+                      {
+        Vertex vertex = {vertices[i], normals[i], text[i], Color(0.6f, 0.6f, 0.6f)};
+        transformed[i] = vertexShader(vertex, u); });
+
+    std::vector<std::vector<Vertex>> triangles = primitiveAssembly(transformed);
+
+    tbb::concurrent_vector<Fragment> frags = rasterize(triangles);
+
+    return frags;
 }
 
 void renderBuffer(SDL_Renderer *renderer)

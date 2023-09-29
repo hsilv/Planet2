@@ -8,7 +8,7 @@
 #include "../framebuffer/framebuffer.h"
 #include "../Noises/earth.hpp"
 
-glm::vec3 L = glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f));
+glm::vec3 L = glm::normalize(glm::vec3(-1.0f, 0.0f, 0.0f));
 
 std::pair<float, float> barycentricCoordinates(const glm::ivec2 &P, const glm::vec3 &A, const glm::vec3 &B, const glm::vec3 &C)
 {

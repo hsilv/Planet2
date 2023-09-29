@@ -3,7 +3,6 @@
 #include "fps/fps.h"
 #include <sstream>
 #include <stdio.h>
-#include "FastNoise/FastNoise.h"
 #include "Noises/earth.hpp"
 #include "Noises/jupiter.hpp"
 #include <tbb/tbb.h>
@@ -12,6 +11,7 @@
 #include "uniform/uniform.h"
 #include "matrixes/matrixes.hpp"
 #include "framebuffer/framebuffer.h"
+#include "tex/tex.h"
 
 float angle = 3.14f / 3.0f;
 Uniforms uniform;
@@ -22,17 +22,24 @@ std::vector<glm::vec3> vertexes2;
 std::vector<glm::vec3> normals2;
 std::vector<glm::vec3> originals2;
 
-glm::vec3 eye = glm::vec3(0, 5, 0.10f);
+glm::vec3 eye = glm::vec3(0, 10.0f, 0.10f);
 glm::vec3 center = glm::vec3(0, 0, 0);
 
 std::vector<Fragment> stars;
 int numStars = 1500;
 
-float moonAxisX = 1.5;
-float moonAxisZ = 1.5;
+float moonAxisX = 1.5f;
+float moonAxisZ = 2.0f;
 
 SDL_Window *window = nullptr;
 SDL_Renderer *renderer = nullptr;
+
+float minX = 0;
+float maxX = 0;
+float minY = 0;
+float maxY = 0;
+
+glm::vec3 translate = glm::vec3(0.0f, -0.25f, 0.0f);
 
 bool setup(uint16_t SCREEN_WIDTH, uint16_t SCREEN_HEIGHT)
 {
@@ -59,18 +66,24 @@ bool setup(uint16_t SCREEN_WIDTH, uint16_t SCREEN_HEIGHT)
   return true;
 }
 
+void setTextures()
+{
+  setEarthSystemNoise(rand(), rand(), rand());
+  SetJupiterNoise();
+}
+
 int main(int argc, char *argv[])
 {
   if (!setup(620, 480))
   {
     return 1;
   }
-  setTerrainNoise(rand(), rand(), rand());
-  SetJupiterNoise();
   loadObj("./models/sphere.obj", vertexes, normals, originals);
   vertexes2 = vertexes;
   normals2 = normals;
   originals2 = originals;
+
+  setTextures();
 
   for (int i = 0; i < numStars; i++)
   {
@@ -90,11 +103,6 @@ int main(int argc, char *argv[])
     angle += 1;
     /*     eye.y += 0.05f; */
 
-    uniform.model = createModelMatrix(glm::vec3(0.0f, -0.25f, 0.0f), glm::vec3(0.7f / 2.5f, 1.0f / 2.5f, 1.0f / 2.5f), glm::vec3(0.0f, 1.0f, 0.0f), angle + 0.5);
-    uniform.view = createViewMatrix(eye, center, glm::vec3(0, 1, 0));
-    uniform.projection = createProjectionMatrix(1200, 800);
-    uniform.viewport = createViewportMatrix(1200, 800);
-
     SDL_Event event;
 
     while (SDL_PollEvent(&event))
@@ -113,34 +121,59 @@ int main(int argc, char *argv[])
           case SDLK_UP:
             eye.z += 0.05f;
             center.z += 0.05f;
+            clearMoonOrbit();
             break;
           case SDLK_DOWN:
             eye.z -= 0.05f;
             center.z -= 0.05f;
+            clearMoonOrbit();
             break;
           case SDLK_RIGHT:
             eye.x -= 0.05f;
             center.x -= 0.05f;
+            clearMoonOrbit();
             break;
           case SDLK_LEFT:
             eye.x += 0.05f;
             center.x += 0.05f;
+            clearMoonOrbit();
             break;
           case SDLK_PAGEUP:
             eye.y += 0.05f;
+            clearMoonOrbit();
             break;
           case SDLK_PAGEDOWN:
             eye.y -= 0.05f;
+            clearMoonOrbit();
             break;
           case SDLK_i:
-            eye.z += 0.05f;
+            if (eye.z + 0.05f == 0.0f)
+            {
+              eye.z == 0.01f;
+              clearMoonOrbit();
+            }
+            else
+            {
+              eye.z += 0.05f;
+              clearMoonOrbit();
+            }
             break;
           case SDLK_k:
-            eye.z -= 0.05f;
+            if (eye.z - 0.05f == 0.0f)
+            {
+              eye.z == 0.01f;
+              clearMoonOrbit();
+            }
+            else
+            {
+              eye.z -= 0.05f;
+              clearMoonOrbit();
+            }
             break;
           case SDLK_r:
-            eye = glm::vec3(0, 5, 0.10f);
+            eye = glm::vec3(0, 10.0f, 0.10f);
             center = glm::vec3(0, 0, 0);
+            clearMoonOrbit();
             break;
           }
         }
@@ -151,17 +184,28 @@ int main(int argc, char *argv[])
     clearFrameBuffer();
     SDL_RenderClear(renderer);
 
+    size_t degrees = 360*5;
+
+/*     tbb::parallel_for(size_t(0), degrees, [&](size_t i)
+                      { 
+                        float angle =  i * (M_PI/45);
+                        glm::vec3 pos = glm::vec3(floor(400.0f * cos(0.05 * angle)) + SCREEN_WIDTH/2.0f, floor(400.0f * sin(0.05 * angle)) + SCREEN_HEIGHT/2.0f, INT32_MAX-2.0f);
+                        Fragment frag = Fragment{pos, Color(50, 50, 50), 0.1f, pos};
+                        point(frag); }); */
+
+    uniform.model = createModelMatrix(translate, glm::vec3(0.7f / 2.5f, 1.0f / 2.5f, 1.0f / 2.5f), glm::vec3(0.0f, 1.0f, 0.0f), angle + 0.5);
+    uniform.view = createViewMatrix(eye, center, glm::vec3(0, 1, 0));
+    uniform.projection = createProjectionMatrix(1200, 800);
+    uniform.viewport = createViewportMatrix(1200, 800);
+
     render(vertexes, normals, originals, uniform, 1);
 
-    uniform.model = createModelMatrix(glm::vec3(moonAxisX * sin(0.05 * angle), -0.25f, moonAxisZ * cos(0.05 * angle)), glm::vec3(0.63f / 8.0f, 1.0f / 8.0f, 1.0f / 8.0f), glm::vec3(0.0f, 1.0f, 0.0f), angle);
+    uniform.model = createModelMatrix(glm::vec3(moonAxisX * sin(0.05 * angle), 0.0f, moonAxisZ * cos(0.05 * angle)) + translate, glm::vec3(0.63f / 5.0f, 1.0f / 5.0f, 1.0f / 5.0f), glm::vec3(0.0f, 1.0f, 0.0f), angle);
     uniform.view = createViewMatrix(eye, center, glm::vec3(0, 1, 0));
     uniform.projection = createProjectionMatrix(1200, 800);
     uniform.viewport = createViewportMatrix(1200, 800);
 
     render(vertexes2, normals2, originals2, uniform, 2);
-
-    /*     tbb::parallel_for(size_t(0), stars.size(), [&](size_t i)
-                          { point(stars[i]); }); */
 
     renderBuffer(renderer);
     endFPS(window);

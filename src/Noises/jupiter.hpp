@@ -19,32 +19,32 @@ float stripeHeight3 = 60.0f;
 const int JUPWIDTH = 1200;
 const int JUPHEIGHT = 800;
 
-int maxY = 0;
-int maxX = 0;
+/* int maxY = 0;
+int maxX = 0; */
 
-std::array<std::array<Color, JUPHEIGHT>, JUPWIDTH> tex;
-std::array<std::array<glm::vec2, JUPHEIGHT>, JUPWIDTH> texI;
+std::array<std::array<Color, JUPHEIGHT>, JUPWIDTH> JupiterTex;
+std::array<std::array<glm::vec2, JUPHEIGHT>, JUPWIDTH> JupiterTexI;
 
 void SetJupiterNoise()
 {
 /*    Color base = {222, 224, 209};
     Color color = {153, 115, 69};
-    std::array<Color, 800> vTex;
+    std::array<Color, 800> vJupiterTex;
     std::array<glm::vec2, JUPHEIGHT> vIndex;
-    std::fill(vTex.begin(), vTex.end(), base);
-    std::fill(tex.begin(), tex.end(), vTex);
+    std::fill(vJupiterTex.begin(), vJupiterTex.end(), base);
+    std::fill(JupiterTex.begin(), JupiterTex.end(), vJupiterTex);
     std::fill(vIndex.begin(), vIndex.end(), glm::vec2(0.0f, 0.0f));
-    std::fill(texI.begin(), texI.end(), vIndex);
+    std::fill(JupiterTexI.begin(), JupiterTexI.end(), vIndex);
 
     for (int x = 0; x < JUPHEIGHT; x++)
     {
         for (int y = 0; y < JUPWIDTH; y++)
         {
             float intens = 1 - abs(sin(y / stripeHeight));
-            tex[x][y] = (color * intens) + (base * (1 - intens));
+            JupiterTex[x][y] = (color * intens) + (base * (1 - intens));
             int newX = x;
             int newY = y;
-            texI[newX][newY] = glm::vec2(newX, newY);
+            JupiterTexI[newX][newY] = glm::vec2(newX, newY);
         }
         
     }
@@ -82,7 +82,7 @@ void SetJupiterNoise()
     jupiter.SetFractalType(FastNoiseLite::FractalType_None); */
 }
 
-/* void disturbJupiterTexture()
+/* void disturbJupiterJupiterTexture()
 {
     float bandFact = 0.3f;
     int numbands = 4;
@@ -117,10 +117,10 @@ void SetJupiterNoise()
             float vx = magx + bandFact * cos(float(y) / (float(JUPHEIGHT) * numbands * M_PI));
             float vy = magy;
 
-            glm::vec2 indexes = texI[x][y];
+            glm::vec2 indexes = JupiterTexI[x][y];
             indexes.x += vx;
             indexes.y += vy;
-            texI[x][y] = indexes;
+            JupiterTexI[x][y] = indexes;
         }
     }
 } */
