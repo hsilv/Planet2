@@ -52,7 +52,7 @@ void point(Fragment f)
     }
 }
 
-void render(std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, std::vector<glm::vec3> &text, Uniforms &u, uint8_t textIndex)
+void render(std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, std::vector<glm::vec3> &text, Uniforms &u, Planet &planet)
 {
     std::vector<Fragment> globalFrag;
 
@@ -67,20 +67,51 @@ void render(std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, s
 
     tbb::concurrent_vector<Fragment> frags = rasterize(triangles);
 
-    tbb::parallel_for(size_t(0), frags.size(), [&](size_t i){
-        Fragment frag = fragmentShader(frags[i], textIndex);
-        point(frag);
-    });
+    tbb::parallel_for(size_t(0), frags.size(), [&](size_t i)
+                      {
+        Fragment frag = fragmentShader(frags[i], planet);
+        point(frag); });
 
-    setMoonOrbit();
+    planet.setOrbit();
 
-    resetDimens();
+    planet.resetBoundings();
 
-    std::vector<Fragment> mOrbit = getMoonOrbit();
+    std::vector<Fragment> orbit = planet.getOrbit();
 
-    tbb::parallel_for(size_t(0), mOrbit.size(), [&](size_t i){
-        point(mOrbit[i]);
-    });
+    tbb::parallel_for(size_t(0), orbit.size(), [&](size_t i)
+                      {
+                        point(orbit[i]); });
+}
+
+void render(std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, std::vector<glm::vec3> &text, Uniforms &u, Satelite &satelite)
+{
+    std::vector<Fragment> globalFrag;
+
+    std::vector<Vertex> transformed(vertices.size());
+
+    tbb::parallel_for(size_t(0), vertices.size(), [&](size_t i)
+                      {
+        Vertex vertex = {vertices[i], normals[i], text[i], Color(0.6f, 0.6f, 0.6f)};
+        transformed[i] = vertexShader(vertex, u); });
+
+    std::vector<std::vector<Vertex>> triangles = primitiveAssembly(transformed);
+
+    tbb::concurrent_vector<Fragment> frags = rasterize(triangles);
+
+    tbb::parallel_for(size_t(0), frags.size(), [&](size_t i)
+                      {
+        Fragment frag = fragmentShader(frags[i], satelite);
+        point(frag); });
+
+    satelite.setOrbit();
+
+    satelite.resetBoundings();
+
+    std::vector<Fragment> orbit = satelite.getOrbit();
+
+    tbb::parallel_for(size_t(0), orbit.size(), [&](size_t i)
+                      {
+                        point(orbit[i]); });
 }
 
 tbb::concurrent_vector<Fragment> getRenderFrags(std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, std::vector<glm::vec3> &text, Uniforms &u, uint8_t textIndex)

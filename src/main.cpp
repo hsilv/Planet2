@@ -39,6 +39,8 @@ float maxX = 0;
 float minY = 0;
 float maxY = 0;
 
+Planet earth;
+
 glm::vec3 translate = glm::vec3(0.0f, -0.25f, 0.0f);
 
 bool setup(uint16_t SCREEN_WIDTH, uint16_t SCREEN_HEIGHT)
@@ -72,6 +74,39 @@ void setTextures()
   SetJupiterNoise();
 }
 
+void setPlanets(std::vector<glm::vec3> vertexes,
+                std::vector<glm::vec3> originals,
+                std::vector<glm::vec3> normals)
+{
+  glm::vec3 translateEarth = glm::vec3(0.0f, -0.25f, 0.0f);
+  glm::vec3 scaleEarth = glm::vec3(0.7f / 2.5f, 1.0f / 2.5f, 1.0f / 2.5f);
+  glm::vec3 rotateEarth = glm::vec3(0.0f, 1.0f, 0.0f);
+  float angleEarth = angle;
+  uint16_t textIndex = 1;
+  Color orbitColor = Color(0, 0, 255);
+  earth = Planet(textIndex, vertexes, originals, normals, translateEarth, scaleEarth, rotateEarth, orbitColor, angle);
+  glm::vec3 translateMoon = glm::vec3(moonAxisX * sin(0.05 * angle), 0.0f, moonAxisZ * cos(0.05 * angle)) + translateEarth;
+  float angleMoon = angle + 0.5f;
+  Color moonOrbitColor = Color(100, 100, 100);
+  glm::vec3 scaleMoon = glm::vec3(0.63f / 5.0f, 1.0f / 5.0f, 1.0f / 5.0f);
+  glm::vec3 rotateMoon = glm::vec3(0.0f, 1.0f, 0.0f);
+  Satelite moon = Satelite(2, vertexes, originals, normals, translateMoon, scaleMoon, rotateMoon, moonOrbitColor, angleMoon);
+  moon.axisX = 1.5f;
+  moon.axisY = 2.0f;
+  moon.angularSpeed = 0.075f;
+  moon.setTranslation(translateEarth);
+  earth.satelites.push_back(moon);
+  Satelite moon2 = Satelite(2, vertexes, originals, normals, translateMoon, scaleMoon * 0.5f, rotateMoon, moonOrbitColor, angleMoon);
+  moon2.axisX = 3.5f;
+  moon2.axisY = 4.4f;
+  moon2.setTranslation(translateEarth);
+  earth.satelites.push_back(moon2);
+}
+
+void resetOrbits(){
+  earth.clearOrbit();
+}
+
 int main(int argc, char *argv[])
 {
   if (!setup(620, 480))
@@ -84,6 +119,7 @@ int main(int argc, char *argv[])
   originals2 = originals;
 
   setTextures();
+  setPlanets(vertexes, originals, normals);
 
   for (int i = 0; i < numStars; i++)
   {
@@ -101,7 +137,6 @@ int main(int argc, char *argv[])
   {
     startFPS();
     angle += 1;
-    /*     eye.y += 0.05f; */
 
     SDL_Event event;
 
@@ -121,41 +156,41 @@ int main(int argc, char *argv[])
           case SDLK_UP:
             eye.z += 0.05f;
             center.z += 0.05f;
-            clearMoonOrbit();
+            resetOrbits();
             break;
           case SDLK_DOWN:
             eye.z -= 0.05f;
             center.z -= 0.05f;
-            clearMoonOrbit();
+            resetOrbits();
             break;
           case SDLK_RIGHT:
             eye.x -= 0.05f;
             center.x -= 0.05f;
-            clearMoonOrbit();
+            resetOrbits();
             break;
           case SDLK_LEFT:
             eye.x += 0.05f;
             center.x += 0.05f;
-            clearMoonOrbit();
+            resetOrbits();
             break;
           case SDLK_PAGEUP:
             eye.y += 0.05f;
-            clearMoonOrbit();
+            resetOrbits();
             break;
           case SDLK_PAGEDOWN:
             eye.y -= 0.05f;
-            clearMoonOrbit();
+            resetOrbits();
             break;
           case SDLK_i:
             if (eye.z + 0.05f == 0.0f)
             {
               eye.z == 0.01f;
-              clearMoonOrbit();
+              resetOrbits();
             }
             else
             {
               eye.z += 0.05f;
-              clearMoonOrbit();
+              resetOrbits();
             }
             break;
           case SDLK_k:
@@ -167,13 +202,13 @@ int main(int argc, char *argv[])
             else
             {
               eye.z -= 0.05f;
-              clearMoonOrbit();
+              resetOrbits();
             }
             break;
           case SDLK_r:
             eye = glm::vec3(0, 10.0f, 0.10f);
             center = glm::vec3(0, 0, 0);
-            clearMoonOrbit();
+            resetOrbits();
             break;
           }
         }
@@ -184,28 +219,26 @@ int main(int argc, char *argv[])
     clearFrameBuffer();
     SDL_RenderClear(renderer);
 
-    size_t degrees = 360*5;
-
-/*     tbb::parallel_for(size_t(0), degrees, [&](size_t i)
-                      { 
-                        float angle =  i * (M_PI/45);
-                        glm::vec3 pos = glm::vec3(floor(400.0f * cos(0.05 * angle)) + SCREEN_WIDTH/2.0f, floor(400.0f * sin(0.05 * angle)) + SCREEN_HEIGHT/2.0f, INT32_MAX-2.0f);
-                        Fragment frag = Fragment{pos, Color(50, 50, 50), 0.1f, pos};
-                        point(frag); }); */
-
-    uniform.model = createModelMatrix(translate, glm::vec3(0.7f / 2.5f, 1.0f / 2.5f, 1.0f / 2.5f), glm::vec3(0.0f, 1.0f, 0.0f), angle + 0.5);
+    earth.angle = angle;
+    uniform.model = createModelMatrix(earth.translate, earth.scale, earth.rotate, earth.angle + 0.5);
     uniform.view = createViewMatrix(eye, center, glm::vec3(0, 1, 0));
     uniform.projection = createProjectionMatrix(1200, 800);
     uniform.viewport = createViewportMatrix(1200, 800);
 
-    render(vertexes, normals, originals, uniform, 1);
+    render(vertexes, normals, originals, uniform, earth);
 
-    uniform.model = createModelMatrix(glm::vec3(moonAxisX * sin(0.05 * angle), 0.0f, moonAxisZ * cos(0.05 * angle)) + translate, glm::vec3(0.63f / 5.0f, 1.0f / 5.0f, 1.0f / 5.0f), glm::vec3(0.0f, 1.0f, 0.0f), angle);
-    uniform.view = createViewMatrix(eye, center, glm::vec3(0, 1, 0));
-    uniform.projection = createProjectionMatrix(1200, 800);
-    uniform.viewport = createViewportMatrix(1200, 800);
-
-    render(vertexes2, normals2, originals2, uniform, 2);
+    for (int i = 0; i < earth.satelites.size(); i++)
+    {
+      Satelite satel = earth.satelites[i];
+      satel.angle = angle;
+      satel.setTranslation(earth.translate);
+      uniform.model = createModelMatrix(satel.translate, satel.scale, satel.rotate, satel.angle);
+      uniform.view = createViewMatrix(eye, center, glm::vec3(0, 1, 0));
+      uniform.projection = createProjectionMatrix(1200, 800);
+      uniform.viewport = createViewportMatrix(1200, 800);
+      render(satel.vertexes, satel.normals, satel.originals, uniform, satel);
+      earth.satelites[i] = satel;
+    }
 
     renderBuffer(renderer);
     endFPS(window);

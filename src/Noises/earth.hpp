@@ -227,7 +227,7 @@ void setEarthSystemNoise(long terrSeed, long clSeed, long mnSeed)
 };
 
 void addMoonOrbitPoint(int x, int y, int z){
-    moonOrbit.push_back(Fragment{glm::vec3(x,y,z), Color(200,200,200), 0.1f, glm::vec3(x,y,z)});
+    moonOrbit.push_back(Fragment{glm::vec3(x,y,z), Color(100,100,100), 0.1f, glm::vec3(x,y,z)});
 }
 
 std::vector<Fragment> getMoonOrbit(){
