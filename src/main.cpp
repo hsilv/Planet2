@@ -22,7 +22,7 @@ std::vector<glm::vec3> vertexes2;
 std::vector<glm::vec3> normals2;
 std::vector<glm::vec3> originals2;
 
-glm::vec3 eye = glm::vec3(0, 10.0f, 0.10f);
+glm::vec3 eye = glm::vec3(0, 50.0f, 0.10f);
 glm::vec3 center = glm::vec3(0, 0, 0);
 
 std::vector<Fragment> stars;
@@ -85,6 +85,10 @@ void setPlanets(std::vector<glm::vec3> vertexes,
   uint16_t textIndex = 1;
   Color orbitColor = Color(0, 0, 255);
   earth = Planet(textIndex, vertexes, originals, normals, translateEarth, scaleEarth, rotateEarth, orbitColor, angle);
+  earth.axisX = 10.5f;
+  earth.axisY = 14.0f;
+  earth.angularSpeed = 0.025f;
+  earth.setTranslation();
   glm::vec3 translateMoon = glm::vec3(moonAxisX * sin(0.05 * angle), 0.0f, moonAxisZ * cos(0.05 * angle)) + translateEarth;
   float angleMoon = angle + 0.5f;
   Color moonOrbitColor = Color(100, 100, 100);
@@ -93,7 +97,7 @@ void setPlanets(std::vector<glm::vec3> vertexes,
   Satelite moon = Satelite(2, vertexes, originals, normals, translateMoon, scaleMoon, rotateMoon, moonOrbitColor, angleMoon);
   moon.axisX = 1.5f;
   moon.axisY = 2.0f;
-  moon.angularSpeed = 0.075f;
+  moon.angularSpeed = 0.2f;
   moon.setTranslation(translateEarth);
   earth.satelites.push_back(moon);
   Satelite moon2 = Satelite(2, vertexes, originals, normals, translateMoon, scaleMoon * 0.5f, rotateMoon, moonOrbitColor, angleMoon);
@@ -220,6 +224,7 @@ int main(int argc, char *argv[])
     SDL_RenderClear(renderer);
 
     earth.angle = angle;
+    earth.setTranslation();
     uniform.model = createModelMatrix(earth.translate, earth.scale, earth.rotate, earth.angle + 0.5);
     uniform.view = createViewMatrix(eye, center, glm::vec3(0, 1, 0));
     uniform.projection = createProjectionMatrix(1200, 800);

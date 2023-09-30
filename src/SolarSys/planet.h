@@ -119,7 +119,7 @@ public:
     float angle;
     float axisX;
     float axisY;
-    float angleOffset;
+    float angularSpeed;
 
     int planetWidthU = INT32_MIN;
     int planetWidthD = INT32_MAX;
@@ -154,6 +154,11 @@ public:
         return orbit;
     }
 
+    void setTranslation()
+    {
+        translate = glm::vec3(axisX * sin(angularSpeed * angle), 0.0f, axisY * cos(angularSpeed * angle));
+    }
+
     void clearOrbit()
     {
         orbit.clear();
@@ -168,6 +173,10 @@ public:
 
     void addOrbitPoint(int x, int y, int z)
     {
+        if (orbit.size() >= 1500)
+        {
+            clearOrbit();
+        };
         orbit.push_back(Fragment{glm::vec3(x, y, z), orbitColor, 0.1f, glm::vec3(x, y, z)});
     }
 
