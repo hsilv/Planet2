@@ -12,36 +12,24 @@
 #include "matrixes/matrixes.hpp"
 #include "framebuffer/framebuffer.h"
 #include "tex/tex.h"
+#include "SolarSys/set.hpp"
 
 float angle = 3.14f / 3.0f;
 Uniforms uniform;
 std::vector<glm::vec3> vertexes;
 std::vector<glm::vec3> normals;
 std::vector<glm::vec3> originals;
-std::vector<glm::vec3> vertexes2;
-std::vector<glm::vec3> normals2;
-std::vector<glm::vec3> originals2;
 
-glm::vec3 eye = glm::vec3(0, 50.0f, 0.10f);
+glm::vec3 eye = glm::vec3(0, 100.01f, -7.0f);
 glm::vec3 center = glm::vec3(0, 0, 0);
 
 std::vector<Fragment> stars;
 int numStars = 1500;
 
-float moonAxisX = 1.5f;
-float moonAxisZ = 2.0f;
-
 SDL_Window *window = nullptr;
 SDL_Renderer *renderer = nullptr;
 
-float minX = 0;
-float maxX = 0;
-float minY = 0;
-float maxY = 0;
-
-Planet earth;
-
-glm::vec3 translate = glm::vec3(0.0f, -0.25f, 0.0f);
+Star sun;
 
 bool setup(uint16_t SCREEN_WIDTH, uint16_t SCREEN_HEIGHT)
 {
@@ -74,41 +62,9 @@ void setTextures()
   SetJupiterNoise();
 }
 
-void setPlanets(std::vector<glm::vec3> vertexes,
-                std::vector<glm::vec3> originals,
-                std::vector<glm::vec3> normals)
+void resetOrbits()
 {
-  glm::vec3 translateEarth = glm::vec3(0.0f, -0.25f, 0.0f);
-  glm::vec3 scaleEarth = glm::vec3(0.7f / 2.5f, 1.0f / 2.5f, 1.0f / 2.5f);
-  glm::vec3 rotateEarth = glm::vec3(0.0f, 1.0f, 0.0f);
-  float angleEarth = angle;
-  uint16_t textIndex = 1;
-  Color orbitColor = Color(0, 0, 255);
-  earth = Planet(textIndex, vertexes, originals, normals, translateEarth, scaleEarth, rotateEarth, orbitColor, angle);
-  earth.axisX = 10.5f;
-  earth.axisY = 14.0f;
-  earth.angularSpeed = 0.025f;
-  earth.setTranslation();
-  glm::vec3 translateMoon = glm::vec3(moonAxisX * sin(0.05 * angle), 0.0f, moonAxisZ * cos(0.05 * angle)) + translateEarth;
-  float angleMoon = angle + 0.5f;
-  Color moonOrbitColor = Color(100, 100, 100);
-  glm::vec3 scaleMoon = glm::vec3(0.63f / 5.0f, 1.0f / 5.0f, 1.0f / 5.0f);
-  glm::vec3 rotateMoon = glm::vec3(0.0f, 1.0f, 0.0f);
-  Satelite moon = Satelite(2, vertexes, originals, normals, translateMoon, scaleMoon, rotateMoon, moonOrbitColor, angleMoon);
-  moon.axisX = 1.5f;
-  moon.axisY = 2.0f;
-  moon.angularSpeed = 0.2f;
-  moon.setTranslation(translateEarth);
-  earth.satelites.push_back(moon);
-  Satelite moon2 = Satelite(2, vertexes, originals, normals, translateMoon, scaleMoon * 0.5f, rotateMoon, moonOrbitColor, angleMoon);
-  moon2.axisX = 3.5f;
-  moon2.axisY = 4.4f;
-  moon2.setTranslation(translateEarth);
-  earth.satelites.push_back(moon2);
-}
-
-void resetOrbits(){
-  earth.clearOrbit();
+  sun.clearOrbit();
 }
 
 int main(int argc, char *argv[])
@@ -118,12 +74,9 @@ int main(int argc, char *argv[])
     return 1;
   }
   loadObj("./models/sphere.obj", vertexes, normals, originals);
-  vertexes2 = vertexes;
-  normals2 = normals;
-  originals2 = originals;
 
   setTextures();
-  setPlanets(vertexes, originals, normals);
+  sun = setSystem(vertexes, originals, normals, angle);
 
   for (int i = 0; i < numStars; i++)
   {
@@ -140,7 +93,7 @@ int main(int argc, char *argv[])
   while (running)
   {
     startFPS();
-    angle += 1;
+    angle += 0.4f;
 
     SDL_Event event;
 
@@ -201,7 +154,7 @@ int main(int argc, char *argv[])
             if (eye.z - 0.05f == 0.0f)
             {
               eye.z == 0.01f;
-              clearMoonOrbit();
+              resetOrbits();
             }
             else
             {
@@ -223,28 +176,45 @@ int main(int argc, char *argv[])
     clearFrameBuffer();
     SDL_RenderClear(renderer);
 
-    earth.angle = angle;
-    earth.setTranslation();
-    uniform.model = createModelMatrix(earth.translate, earth.scale, earth.rotate, earth.angle + 0.5);
+    sun.axisAngle += 1.0f;
+    sun.angle = angle;
+    sun.setTranslation();
+    uniform.model = createModelMatrix(sun.translate, sun.scale, sun.rotate, sun.axisAngle);
     uniform.view = createViewMatrix(eye, center, glm::vec3(0, 1, 0));
     uniform.projection = createProjectionMatrix(1200, 800);
     uniform.viewport = createViewportMatrix(1200, 800);
+    render(vertexes, normals, originals, uniform, sun);
 
-    render(vertexes, normals, originals, uniform, earth);
-
-    for (int i = 0; i < earth.satelites.size(); i++)
+    for (int i = 0; i < sun.planets.size(); i++)
     {
-      Satelite satel = earth.satelites[i];
-      satel.angle = angle;
-      satel.setTranslation(earth.translate);
-      uniform.model = createModelMatrix(satel.translate, satel.scale, satel.rotate, satel.angle);
+      Planet planet = sun.planets[i];
+      planet.axisAngle += 1.0f;
+      planet.angle = angle;
+      planet.setTranslation(sun.translate);
+      planet.calculateLight(sun.translate);
+      uniform.model = createModelMatrix(planet.translate, planet.scale, planet.rotate, planet.axisAngle);
       uniform.view = createViewMatrix(eye, center, glm::vec3(0, 1, 0));
       uniform.projection = createProjectionMatrix(1200, 800);
       uniform.viewport = createViewportMatrix(1200, 800);
-      render(satel.vertexes, satel.normals, satel.originals, uniform, satel);
-      earth.satelites[i] = satel;
-    }
 
+      render(vertexes, normals, originals, uniform, planet);
+
+      for (int j = 0; j < planet.satelites.size(); j++)
+      {
+        Satelite satel = planet.satelites[j];
+        satel.angle = angle;
+        satel.axisAngle += 0.8f;
+        satel.setTranslation(planet.translate);
+        satel.calculateLight(sun.translate);
+        uniform.model = createModelMatrix(satel.translate, satel.scale, satel.rotate, satel.axisAngle);
+        uniform.view = createViewMatrix(eye, center, glm::vec3(0, 1, 0));
+        uniform.projection = createProjectionMatrix(1200, 800);
+        uniform.viewport = createViewportMatrix(1200, 800);
+        render(satel.vertexes, satel.normals, satel.originals, uniform, satel);
+        planet.satelites[j] = satel;
+      }
+      sun.planets[i] = planet;
+    }
     renderBuffer(renderer);
     endFPS(window);
   }

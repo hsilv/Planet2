@@ -8,10 +8,9 @@
 #include "../framebuffer/framebuffer.h"
 #include "../Noises/earth.hpp"
 
-glm::vec3 L = glm::normalize(glm::vec3(-1.0f, 0.0f, 0.0f));
-
 std::pair<float, float> barycentricCoordinates(const glm::ivec2 &P, const glm::vec3 &A, const glm::vec3 &B, const glm::vec3 &C)
 {
+    
     glm::vec3 bary = glm::cross(
         glm::vec3(C.x - A.x, B.x - A.x, A.x - P.x),
         glm::vec3(C.y - A.y, B.y - A.y, A.y - P.y));
@@ -26,7 +25,7 @@ std::pair<float, float> barycentricCoordinates(const glm::ivec2 &P, const glm::v
         bary.x / bary.z);
 }
 
-std::vector<Fragment> triangle(Vertex a, Vertex b, Vertex c)
+std::vector<Fragment> triangle(Vertex a, Vertex b, Vertex c, const glm::vec3 &L)
 {
     std::vector<Fragment> frags;
     glm::vec3 A = a.position;
@@ -37,12 +36,6 @@ std::vector<Fragment> triangle(Vertex a, Vertex b, Vertex c)
     int minY = std::min(std::min(A.y, B.y), C.y);
     int maxX = std::max(std::max(A.x, B.x), C.x);
     int maxY = std::max(std::max(A.y, B.y), C.y);
-
-    /*   glm::vec3 TA = glm::vec3(a.originals.x * SCREEN_WIDTH, a.originals.y * SCREEN_HEIGHT, 0);
-      glm::vec3 TB = glm::vec3(b.originals.x * SCREEN_WIDTH, b.originals.y * SCREEN_HEIGHT, 0);
-      glm::vec3 TC = glm::vec3(c.originals.x * SCREEN_WIDTH, c.originals.y * SCREEN_HEIGHT, 0); */
-
-    L = glm::normalize(L);
 
     for (float y = minY; y <= maxY; y++)
     {

@@ -58,4 +58,10 @@ Fragment fragmentShader(Fragment &frag, Satelite &planet)
     frag.color = color * frag.intensity;
     return frag;
 }
+
+Fragment fragmentShader(Fragment &frag, Star &planet)
+{
+    frag.color = Color(210, 210, 50) * 1.0f;
+    return frag;
+}
 #endif

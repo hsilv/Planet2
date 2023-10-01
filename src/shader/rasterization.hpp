@@ -5,8 +5,9 @@
 #include "../fragment/fragment.h"
 #include "../vertex/vertex3.h"
 #include "triangle.hpp"
+#include "../SolarSys/planet.h"
 
-tbb::concurrent_vector<Fragment> rasterize(const std::vector<std::vector<Vertex>> &triangles)
+tbb::concurrent_vector<Fragment> rasterize(const std::vector<std::vector<Vertex>> &triangles, glm::vec3 L)
 {
     tbb::concurrent_vector<Fragment> fragments;
 
@@ -16,23 +17,13 @@ tbb::concurrent_vector<Fragment> rasterize(const std::vector<std::vector<Vertex>
         std::vector<Fragment> triangleFrags = triangle(
             triangleVertices[0],
             triangleVertices[1],
-            triangleVertices[2]);
+            triangleVertices[2],
+            L);
         
         for (Fragment frag: triangleFrags){
             fragments.push_back(frag);
         }
     });
-/*     for (const std::vector<Vertex> triangleVertices : triangles)
-    {
-        std::vector<Fragment> triangleFrags = triangle(
-            triangleVertices[0],
-            triangleVertices[1],
-            triangleVertices[2]);
-
-        for(Fragment frag: triangleFrags){
-            fragments.push_back(frag);
-        }
-    } */
     return fragments;
 }
 
