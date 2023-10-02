@@ -13,6 +13,7 @@
 #include "../shader/vertexShader.hpp"
 #include "../shader/assembly.hpp"
 #include "../shader/fragmentShader.hpp"
+#include "../Noises/sun.hpp"
 #include "SDL.h"
 
 Color clearColor(0, 0, 0);
@@ -79,8 +80,7 @@ void render(std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, s
     std::vector<Fragment> orbit = planet.getOrbit();
 
     tbb::parallel_for(size_t(0), orbit.size(), [&](size_t i)
-                      {
-                        point(orbit[i]); });
+                      { point(orbit[i]); });
 }
 
 void render(std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, std::vector<glm::vec3> &text, Uniforms &u, Star &planet)
@@ -100,8 +100,13 @@ void render(std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, s
 
     tbb::parallel_for(size_t(0), frags.size(), [&](size_t i)
                       {
-        Fragment frag = fragmentShader(frags[i], planet);
-        point(frag); });
+        frags[i] = fragmentShader(frags[i], planet);});
+
+    planet.setAura(Color{255, 133+90, 41+90}, frags);
+
+    tbb::parallel_for(size_t(0), frags.size(), [&](size_t i)
+                      {
+        point(frags[i]);});
 
     planet.setOrbit();
 
@@ -110,8 +115,7 @@ void render(std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, s
     std::vector<Fragment> orbit = planet.getOrbit();
 
     tbb::parallel_for(size_t(0), orbit.size(), [&](size_t i)
-                      {
-                        point(orbit[i]); });
+                      { point(orbit[i]); });
 }
 
 void render(std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, std::vector<glm::vec3> &text, Uniforms &u, Satelite &satelite)
@@ -141,8 +145,7 @@ void render(std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, s
     std::vector<Fragment> orbit = satelite.getOrbit();
 
     tbb::parallel_for(size_t(0), orbit.size(), [&](size_t i)
-                      {
-                        point(orbit[i]); });
+                      { point(orbit[i]); });
 }
 
 tbb::concurrent_vector<Fragment> getRenderFrags(std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, std::vector<glm::vec3> &text, Uniforms &u, uint8_t textIndex)

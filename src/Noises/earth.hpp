@@ -26,8 +26,6 @@ Color continent = {55, 125, 35};
 Color beachColor = {111, 73, 52};
 Color oceanColor = {40, 60, 110};
 Color cloudColor = {255, 255, 255};
-std::map<float, std::map<float, std::map<float, Color>>> EarthTexture;
-std::vector<Fragment> moonOrbit;
 
 float getTerrainNoise(int x, int y, int z)
 {
@@ -225,18 +223,5 @@ void setEarthSystemNoise(long terrSeed, long clSeed, long mnSeed)
     moonWarp.SetDomainWarpAmp(100.00f);
     moonWarp.SetFrequency(0.005f);
 };
-
-void addMoonOrbitPoint(int x, int y, int z){
-    moonOrbit.push_back(Fragment{glm::vec3(x,y,z), Color(100,100,100), 0.1f, glm::vec3(x,y,z)});
-}
-
-std::vector<Fragment> getMoonOrbit(){
-    return moonOrbit;
-}
-
-void clearMoonOrbit(){
-    moonOrbit.clear();
-    moonOrbit.shrink_to_fit();
-}
 
 #endif

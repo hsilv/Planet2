@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include "Noises/earth.hpp"
 #include "Noises/jupiter.hpp"
+#include "Noises/sun.hpp"
 #include <tbb/tbb.h>
 #include <glm/glm.hpp>
 #include "obj.h"
@@ -20,7 +21,7 @@ std::vector<glm::vec3> vertexes;
 std::vector<glm::vec3> normals;
 std::vector<glm::vec3> originals;
 
-glm::vec3 eye = glm::vec3(0, 100.01f, -7.0f);
+glm::vec3 eye = glm::vec3(0, 35.01f, 0.01f);
 glm::vec3 center = glm::vec3(0, 0, 0);
 
 std::vector<Fragment> stars;
@@ -60,6 +61,7 @@ void setTextures()
 {
   setEarthSystemNoise(rand(), rand(), rand());
   SetJupiterNoise();
+  setSunNoise(rand());
 }
 
 void resetOrbits()
@@ -176,7 +178,8 @@ int main(int argc, char *argv[])
     clearFrameBuffer();
     SDL_RenderClear(renderer);
 
-    sun.axisAngle += 1.0f;
+    incrementSunNoisePlane();
+    sun.axisAngle += 0.5f;
     sun.angle = angle;
     sun.setTranslation();
     uniform.model = createModelMatrix(sun.translate, sun.scale, sun.rotate, sun.axisAngle);

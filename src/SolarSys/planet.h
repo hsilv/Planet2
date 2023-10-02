@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include "../fragment/fragment.h"
 #include "../color/color.h"
+#include "tbb/tbb.h"
 
 class Satelite
 {
@@ -236,7 +237,6 @@ public:
     }
 };
 
-
 class Star
 {
 public:
@@ -289,6 +289,21 @@ public:
     std::vector<Fragment> getOrbit()
     {
         return orbit;
+    }
+
+    void setAura(Color auraColor, tbb::concurrent_vector<Fragment> &starFrags)
+    {
+        tbb::parallel_for(size_t(0), starFrags.size(), [&](size_t i)
+                          {
+                              float numY = (M_PI * starFrags[i].position.y + M_PI * ((planetHeightU - planetHeightD) / 2.0f));
+                              float intensityY = abs(sin(numY / planetHeightU)) * M_PI;
+                              intensityY = pow(intensityY, 1.0f);
+                              float numX = (M_PI * starFrags[i].position.x + M_PI * ((planetWidthU - planetWidthD) / 2.0f));
+                              float intensityX = abs(sin(numX / planetWidthU)) * M_PI;
+                              intensityX = pow(intensityX, 1.0f);
+                              float intensity = (intensityY+intensityX) / 2.0f;
+                              intensity = intensity >= 1.0f ? 1.0f : intensity;
+                              starFrags[i].color = auraColor * intensity + starFrags[i].color * (1.0f - intensity); });
     }
 
     void calculateLight(glm::vec3 source)

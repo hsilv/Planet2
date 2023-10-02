@@ -7,9 +7,9 @@
 #include "./planet.h"
 
 Star setSystem(std::vector<glm::vec3> vertexes,
-                std::vector<glm::vec3> originals,
-                std::vector<glm::vec3> normals,
-                float angle)
+               std::vector<glm::vec3> originals,
+               std::vector<glm::vec3> normals,
+               float angle)
 {
   Star sun;
   Planet earth;
@@ -19,7 +19,7 @@ Star setSystem(std::vector<glm::vec3> vertexes,
   float angleSun = angle;
   uint16_t textIndex = 1;
   Color orbitColor = Color(0, 0, 255);
-  sun = Star(textIndex, vertexes, originals, normals, translateSun, scaleSun, rotateSun, orbitColor, angle);
+  sun = Star(4, vertexes, originals, normals, translateSun, scaleSun, rotateSun, orbitColor, angle);
   glm::vec3 translateEarth = glm::vec3(0.0f, -0.25f, 0.0f);
   glm::vec3 scaleEarth = glm::vec3(0.7f / 2.5f, 1.0f / 2.5f, 1.0f / 2.5f);
   glm::vec3 rotateEarth = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -50,8 +50,16 @@ Star setSystem(std::vector<glm::vec3> vertexes,
   moonSat2.calculateLight(sun.translate);
   earth.satelites.push_back(moonSat2);
   sun.planets.push_back(earth);
+  glm::vec3 scaleVenus = glm::vec3(0.63f / 3.0f, 1.0f / 3.0f, 1.0f / 3.0f);
+  glm::vec3 translateVenus = glm::vec3(10.25f * sin(0.045f * 150.0f), 0.0f, 15.5f * cos(0.045f * 150.0f)) + translateSun;
+  Planet venus = Planet(2, vertexes, originals, normals, translateVenus, scaleVenus, rotateEarth, Color(140, 127, 69), angle);
+  venus.axisX = 10.25f;
+  venus.axisY = 15.5f;
+  venus.angularSpeed = 0.045f;
+  venus.setTranslation(sun.translate);
+  venus.calculateLight(sun.translate);
+  sun.planets.push_back(venus);
   return sun;
 }
-
 
 #endif

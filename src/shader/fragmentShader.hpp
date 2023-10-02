@@ -5,6 +5,7 @@
 #include "../color/color.h"
 #include "../Noises/earth.hpp"
 #include "../Noises/jupiter.hpp"
+#include "../Noises/sun.hpp"
 #include "../SolarSys/planet.h"
 
 Fragment fragmentShader(Fragment &frag, Planet &planet)
@@ -61,7 +62,14 @@ Fragment fragmentShader(Fragment &frag, Satelite &planet)
 
 Fragment fragmentShader(Fragment &frag, Star &planet)
 {
-    frag.color = Color(210, 210, 50) * 1.0f;
+    Color color;
+    if(planet.textIndex == 4){
+        color = getSunTexture(frag.original.x*100, frag.original.y*100, frag.original.z*100);
+        planet.setBoundings(frag);
+    }else{
+        color = Color(255, 133, 41);
+    }
+    frag.color = color * 1.4f;
     return frag;
 }
 #endif
