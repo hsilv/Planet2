@@ -61,7 +61,7 @@ void render(std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, s
 
     tbb::parallel_for(size_t(0), vertices.size(), [&](size_t i)
                       {
-        Vertex vertex = {vertices[i], normals[i], text[i], Color(0.6f, 0.6f, 0.6f)};
+        Vertex vertex = {vertices[i], normals[i], text[i], Color(0.6f, 0.6f, 0.6f), true};
         transformed[i] = vertexShader(vertex, u); });
 
     std::vector<std::vector<Vertex>> triangles = primitiveAssembly(transformed);
@@ -91,7 +91,7 @@ void render(std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, s
 
     tbb::parallel_for(size_t(0), vertices.size(), [&](size_t i)
                       {
-        Vertex vertex = {vertices[i], normals[i], text[i], Color(0.6f, 0.6f, 0.6f)};
+        Vertex vertex = {vertices[i], normals[i], text[i], Color(0.6f, 0.6f, 0.6f), true};
         transformed[i] = vertexShader(vertex, u); });
 
     std::vector<std::vector<Vertex>> triangles = primitiveAssembly(transformed);
@@ -101,8 +101,6 @@ void render(std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, s
     tbb::parallel_for(size_t(0), frags.size(), [&](size_t i)
                       {
         frags[i] = fragmentShader(frags[i], planet);});
-
-    planet.setAura(Color{255, 133+90, 41+90}, frags);
 
     tbb::parallel_for(size_t(0), frags.size(), [&](size_t i)
                       {
@@ -126,7 +124,7 @@ void render(std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, s
 
     tbb::parallel_for(size_t(0), vertices.size(), [&](size_t i)
                       {
-        Vertex vertex = {vertices[i], normals[i], text[i], Color(0.6f, 0.6f, 0.6f)};
+        Vertex vertex = {vertices[i], normals[i], text[i], Color(0.6f, 0.6f, 0.6f), true};
         transformed[i] = vertexShader(vertex, u); });
 
     std::vector<std::vector<Vertex>> triangles = primitiveAssembly(transformed);

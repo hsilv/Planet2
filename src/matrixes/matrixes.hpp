@@ -33,7 +33,7 @@ modelMatrix createModelMatrix(glm::vec3 translateV, glm::vec3 scaleV, glm::vec3 
 glm::mat4 createViewMatrix(glm::vec3 eye, glm::vec3 lookPoint, glm::vec3 up)
 {
     glm::mat4 viewMatrix;
-    viewMatrix = glm::lookAt(eye, lookPoint, up);
+    viewMatrix = glm::lookAtLH(eye, lookPoint, up);
     return viewMatrix;
 }
 

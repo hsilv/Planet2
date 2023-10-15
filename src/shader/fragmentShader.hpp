@@ -13,7 +13,7 @@ Fragment fragmentShader(Fragment &frag, Planet &planet)
     Color color;
     if (planet.textIndex == 2)
     {
-        color = getMoonTexture(frag.original.x * 100, frag.original.y * 100, frag.original.z * 100);
+        color = getMoonTexture(frag.original.x * 75, frag.original.y * 75, frag.original.z * 75);
         planet.setBoundings(frag);
     }
     else if (planet.textIndex == 1)
@@ -64,7 +64,7 @@ Fragment fragmentShader(Fragment &frag, Star &planet)
 {
     Color color;
     if(planet.textIndex == 4){
-        color = getSunTexture(frag.original.x*100, frag.original.y*100, frag.original.z*100);
+        color = getSunTexture(frag.original.x*500, frag.original.y*500, frag.original.z*500);
         planet.setBoundings(frag);
     }else{
         color = Color(255, 133, 41);

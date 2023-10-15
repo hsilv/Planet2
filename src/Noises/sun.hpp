@@ -21,12 +21,14 @@ void setSunNoise(long seed){
     sunNoise.SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2S);
     sunNoise.SetSeed(sunNoiseSeed);
     sunNoise.SetFrequency(0.020f);
+    sunNoise.SetRotationType3D(FastNoiseLite::RotationType3D_ImproveXYPlanes);
     sunNoise.SetFractalType(FastNoiseLite::FractalType_FBm);
     sunNoise.SetFractalOctaves(5);
     sunNoise.SetFractalLacunarity(1.70f);
     sunNoise.SetFractalGain(0.60f);
     sunNoise.SetFractalWeightedStrength(0.20f);
     sunNoiseWarp.SetSeed(sunNoiseSeed);
+    sunNoiseWarp.SetRotationType3D(FastNoiseLite::RotationType3D_ImproveXYPlanes);
     sunNoiseWarp.SetDomainWarpAmp(60.50f);
     sunNoiseWarp.SetFrequency(0.005f);
     sunNoiseWarp.SetDomainWarpType(FastNoiseLite::DomainWarpType_OpenSimplex2);
@@ -37,15 +39,15 @@ void setSunNoise(long seed){
 }
 
 void incrementSunNoisePlane(){
-    increment += 1.5f;
+    increment += 0.7f;
 }
 
 Color getSunTexture(float x, float y, float z){
     float newX = x;
     float newY = y;
     float newZ = z+increment;
-    sunNoiseWarp.DomainWarp(newX, newY, newZ);
-    float noise = (1 + sunNoise.GetNoise(newX, newY, newZ))/2.5f;
+    sunNoiseWarp.DomainWarp(newZ, newX, newY);
+    float noise = (1 + sunNoise.GetNoise(newZ, newX, newY))/2.4f;
     return sunNoiseColor * noise;
 }
 
