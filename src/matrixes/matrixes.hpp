@@ -43,7 +43,7 @@ glm::mat4 createProjectionMatrix(int wWidth, int wHeight)
     float fovInDegrees = 45.0f;
     float aspectRatio = wWidth / wHeight;
     float nearClip = 0.1f;
-    float farClip = 0.15f;
+    float farClip = 1000.0f;
 
     perspective = glm::perspective(glm::radians(fovInDegrees), aspectRatio, nearClip, farClip);
 
@@ -52,10 +52,19 @@ glm::mat4 createProjectionMatrix(int wWidth, int wHeight)
 
 glm::mat4 createViewportMatrix(int wWidth, int wHeight)
 {
+    
     glm::mat4 viewport = glm::mat4(1);
 
-    viewport = glm::scale(viewport, glm::vec3(wWidth/2.0f, wHeight/2.0f, 0.5f));
-    viewport = glm::translate(viewport, glm::vec3(1.0f, 1.0f, 0.5f));
+    if(wWidth > wHeight){
+        viewport = glm::scale(viewport, glm::vec3(wWidth, wWidth, 1.0f));
+        viewport = glm::translate(viewport, glm::vec3(0.5f, (static_cast<float>(wHeight)/static_cast<float>(wWidth))/2.0f, 0.5f));
+    }else if (wWidth < wHeight){
+        viewport = glm::scale(viewport, glm::vec3(wHeight, wHeight, 1.0f));
+        viewport = glm::translate(viewport, glm::vec3((static_cast<float>(wWidth)/static_cast<float>(wHeight))/2.0f, 0.5f, 0.5f));
+    }else{
+        viewport = glm::scale(viewport, glm::vec3(wHeight, wHeight, 1.0f));
+        viewport = glm::translate(viewport, glm::vec3(0.5f, 0.5f, 0.5f));
+    }
 
     return viewport;
 }

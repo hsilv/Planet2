@@ -67,7 +67,7 @@ public:
 
     void setTranslation(glm::vec3 fatherTrans)
     {
-        translate = glm::vec3(axisX * sin(angularSpeed * angle), 0.0f, axisY * cos(angularSpeed * angle)) + fatherTrans;
+        translate = glm::vec3(axisX * glm::sin(angularSpeed * angle), 0.0f, axisY * glm::cos(angularSpeed * angle)) + fatherTrans;
     }
 
     void clearOrbit()
@@ -178,7 +178,7 @@ public:
 
     void setTranslation(glm::vec3 fatherTrans)
     {
-        translate = glm::vec3(axisX * sin(angularSpeed * angle), 0.0f, axisY * cos(angularSpeed * angle)) + fatherTrans;
+        translate = glm::vec3(axisX * glm::sin(angularSpeed * angle), 0.0f, axisY * glm::cos(angularSpeed * angle)) + fatherTrans;
     }
 
     void clearOrbit()
@@ -315,7 +315,7 @@ public:
 
     void setTranslation()
     {
-        translate = glm::vec3(axisX * sin(angularSpeed * angle), 0.0f, axisY * cos(angularSpeed * angle));
+        translate = glm::vec3(axisX * glm::sin(angularSpeed * angle), 0.0f, axisY * glm::cos(angularSpeed * angle));
     }
 
     void clearOrbit()

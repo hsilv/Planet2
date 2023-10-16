@@ -75,7 +75,7 @@ std::vector<Fragment> triangle(Vertex a, Vertex b, Vertex c, const glm::vec3 &L)
                 frags.push_back(Fragment{P, fragColor, intensity, original});
             }
         }
-    }
+     } 
 
     return frags;
 }

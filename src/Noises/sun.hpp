@@ -14,7 +14,7 @@ FastNoiseLite sunNoiseWarp;
 float sunAuraAxisX;
 float sunAuraAxisY;
 float sunAuraAxisZ;
-Color sunNoiseColor = {255, 133+30, 41+30};
+Color sunNoiseColor = {255, 180, 70};
 
 void setSunNoise(long seed){
     sunNoiseSeed = seed;

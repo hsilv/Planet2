@@ -21,9 +21,10 @@ std::vector<glm::vec3> vertexes;
 std::vector<glm::vec3> normals;
 std::vector<glm::vec3> originals;
 
-glm::vec3 eye = glm::vec3(0, 20.0f, 0.01f);
+glm::vec3 eye = glm::vec3(0.01f, -150.0f, 0.01f);
 glm::vec3 center = glm::vec3(0, 0, 0);
-glm::vec3 relative = glm::vec3(0, 20.0f, 0.01f);
+glm::vec3 relativeEye = glm::vec3(0, -20.0f, 0.00f);
+glm::vec3 relativeCenter = glm::vec3(0.0f, 0.0f, 0.0f);
 
 std::vector<Fragment> stars;
 int numStars = 1500;
@@ -33,7 +34,7 @@ SDL_Renderer *renderer = nullptr;
 
 Star sun;
 
-uint16_t planetIndex = -1;
+int planetIndex = -1;
 
 bool setup(uint16_t SCREEN_WIDTH, uint16_t SCREEN_HEIGHT)
 {
@@ -118,81 +119,108 @@ int main(int argc, char *argv[])
           case SDLK_UP:
             eye.z += 0.05f;
             center.z += 0.05f;
-            relative.z += 0.05f;
+            if (planetIndex >= 0)
+            {
+              relativeEye.z += 0.05f;
+              relativeCenter.z += 0.05f;
+            }
             resetOrbits();
             break;
+
           case SDLK_DOWN:
             eye.z -= 0.05f;
             center.z -= 0.05f;
-            relative.z -= 0.05f;
+            if (planetIndex >= 0)
+            {
+              relativeEye.z -= 0.05f;
+              relativeCenter.z -= 0.05f;
+            }
             resetOrbits();
             break;
-          case SDLK_RIGHT:
+
+          case SDLK_LEFT:
             eye.x -= 0.05f;
             center.x -= 0.05f;
-            relative.x -= 0.05f;
+            if (planetIndex >= 0)
+            {
+              relativeEye.x -= 0.05f;
+              relativeCenter.x -= 0.05f;
+            }
             resetOrbits();
             break;
-          case SDLK_LEFT:
+
+          case SDLK_RIGHT:
             eye.x += 0.05f;
             center.x += 0.05f;
-            relative.x += 0.05f;
+            if (planetIndex >= 0)
+            {
+              relativeEye.x += 0.05f;
+              relativeCenter.x += 0.05f;
+            }
             resetOrbits();
             break;
+
+          case SDLK_KP_MINUS:
+            if (planetIndex - 1 >= -1)
+            {
+              planetIndex -= 1;
+              resetOrbits();
+            }
+            if (planetIndex == -1)
+            {
+              eye = glm::vec3(0.01f, -150.0f, 0.01f);
+              center = glm::vec3(0, 0, 0);
+            }
+            break;
+
+          case SDLK_KP_PLUS:
+            if (planetIndex + 1 != sun.planets.size())
+            {
+              planetIndex += 1;
+              relativeEye = glm::vec3(0, 20.0f, 0.00f);
+              relativeCenter = glm::vec3(0.0f, 0.0f, 0.0f);
+              resetOrbits();
+            }
+            if (planetIndex == -1)
+            {
+              eye = glm::vec3(0.01f, -150.0f, 0.01f);
+              center = glm::vec3(0, 0, 0);
+            }
+            break;
+
           case SDLK_PAGEUP:
-          
-            eye.y += 0.05f;
-            relative.y += 0.05f;
+            eye.y += 0.5f;
+            if (planetIndex >= 0)
+            {
+              relativeEye.y += 0.5f;
+            }
             resetOrbits();
             break;
+
           case SDLK_PAGEDOWN:
-            eye.y -= 0.05f;
-            relative.y -= 0.05f;
+            eye.y -= 0.5f;
+            if (planetIndex >= 0)
+            {
+              relativeEye.y -= 0.5f;
+            }
             resetOrbits();
             break;
-          case SDLK_i:
-            if (eye.z + 0.1f == 0.0f)
+
+          case SDLK_s:
+            eye.z -= 0.5f;
+            if (planetIndex >= 0)
             {
-              eye.z == 0.01f;
-              resetOrbits();
+              relativeEye.z -= 0.5f;
             }
-            else
-            {
-              eye.z += 0.1f;
-              relative.z += 0.1f;
-              resetOrbits();
-            }
-            break;
-          case SDLK_k:
-            if (eye.z - 0.1f == 0.0f)
-            {
-              eye.z == 0.01f;
-              resetOrbits();
-            }
-            else
-            {
-              if(planetIndex >= 0) {
-                relative.z -= 0.1f;
-              } else{
-                eye.z -= 0.1f;
-              }
-              resetOrbits();
-            }
-            break;
-          case SDLK_r:
-            eye = glm::vec3(0, 10.0f, 0.10f);
-            center = glm::vec3(0, 0, 0);
             resetOrbits();
             break;
-          case SDLK_1:
-            planetIndex += 1;
-            relative = glm::vec3(0, 20.0f, 0.01f);
-            resetOrbits();
-            break;
-          case SDLK_ESCAPE:
-            planetIndex = -1;
-            eye = glm::vec3(0, 20.0f, 0.01f);
-            center = glm::vec3(0, 0, 0);
+
+          case SDLK_w:
+            eye.z += 0.5f;
+            if (planetIndex >= 0)
+            {
+              relativeEye.z += 0.5f;
+            }
             resetOrbits();
             break;
           }
@@ -203,15 +231,10 @@ int main(int argc, char *argv[])
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     clearFrameBuffer();
     SDL_RenderClear(renderer);
-
     incrementSunNoisePlane();
     sun.axisAngle += 0.3f;
     sun.angle = angle;
-    sun.setTranslation();
     uniform.model = createModelMatrix(sun.translate, sun.scale, sun.rotate, sun.axisAngle);
-    uniform.view = createViewMatrix(eye, center, glm::vec3(0, 1, 0));
-    uniform.projection = createProjectionMatrix(1200, 800);
-    uniform.viewport = createViewportMatrix(1200, 800);
     render(vertexes, normals, originals, uniform, sun);
 
     for (int i = 0; i < sun.planets.size(); i++)
@@ -239,12 +262,15 @@ int main(int argc, char *argv[])
       }
       if (planetIndex == i)
       {
-        center = glm::vec3(planet.translate.x, planet.translate.y, planet.translate.z);
-        eye = glm::vec3(planet.translate.x, planet.translate.y + 20.0f, planet.translate.z + 0.0001f) + relative;
+        center = glm::vec3(planet.translate.x, planet.translate.y, planet.translate.z) + relativeCenter;
+        eye = glm::vec3(planet.translate.x, planet.translate.y + 20.0f, planet.translate.z + 0.0001f) + relativeEye;
       }
       sun.planets[i] = planet;
     }
 
+    uniform.view = createViewMatrix(eye, center, glm::vec3(0, 0, -1));
+    uniform.projection = createProjectionMatrix(1200, 800);
+    uniform.viewport = createViewportMatrix(1200, 800);
     renderBuffer(renderer);
     endFPS(window);
   }
