@@ -145,8 +145,8 @@ int main(int argc, char *argv[])
             center.x -= 0.05f;
             if (planetIndex >= 0)
             {
-              relativeEye.x -= 0.05f;
-              relativeCenter.x -= 0.05f;
+              relativeEye.x += 0.05f;
+              relativeCenter.x += 0.05f;
             }
             resetOrbits();
             break;
@@ -156,8 +156,8 @@ int main(int argc, char *argv[])
             center.x += 0.05f;
             if (planetIndex >= 0)
             {
-              relativeEye.x += 0.05f;
-              relativeCenter.x += 0.05f;
+              relativeEye.x -= 0.05f;
+              relativeCenter.x -= 0.05f;
             }
             resetOrbits();
             break;
