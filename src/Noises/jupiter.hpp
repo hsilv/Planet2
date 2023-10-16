@@ -13,6 +13,12 @@ FastNoiseLite jupiter;
 FastNoiseLite jupiterWarp;
 FastNoiseLite jupiterBase;
 FastNoiseLite jupiterBaseWarp;
+
+FastNoiseLite gany;
+FastNoiseLite ganyWarp;
+
+Color ganyColor = {100, 127, 131};
+
 float stripeHeight = 35.0f;
 float stripeHeight3 = 120.0f;
 
@@ -55,6 +61,20 @@ void SetJupiterNoise()
     jupiterBaseWarp.SetFractalOctaves(5);
     jupiterBaseWarp.SetFractalLacunarity(1.10f);
     jupiterBaseWarp.SetFractalGain(1.00f);
+
+    long seed = rand();
+    gany.SetSeed(seed);
+    gany.SetRotationType3D(FastNoiseLite::RotationType3D_ImproveXYPlanes);
+    gany.SetFrequency(0.020f);
+    gany.SetFractalType(FastNoiseLite::FractalType_FBm);
+    gany.SetFractalOctaves(5);
+    gany.SetFractalLacunarity(2.10f);
+    gany.SetFractalGain(0.90f);
+    gany.SetFractalWeightedStrength(0.50f);
+    ganyWarp.SetSeed(seed);
+    ganyWarp.SetDomainWarpType(FastNoiseLite::DomainWarpType_BasicGrid);
+    ganyWarp.SetDomainWarpAmp(25.00f);
+    ganyWarp.SetFrequency(0.010f);
 }
 
 Color GetJupiterTexture(float x, float y, float z)
@@ -99,6 +119,13 @@ Color GetJupiterTexture(float x, float y, float z)
     color = (color * intens) + (base2 * (1 - intens));
 
     return color;
+}
+
+Color GetGanyTexture(float x, float y, float z)
+{
+    ganyWarp.DomainWarp(x, y, z);
+    float noise = (1 + gany.GetNoise(x, y, z)) / 1.0f;
+    return (ganyColor * noise) + (Color(255, 255, 255) * (1.0f - noise));
 }
 
 #endif

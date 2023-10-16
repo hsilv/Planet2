@@ -32,6 +32,11 @@ Fragment fragmentShader(Fragment &frag, Planet &planet)
         color = GetMarsTexture(frag.original.x * 75 * 5, frag.original.y * 75 * 5, frag.original.z * 75 * 5);
         planet.setBoundings(frag);
     }
+    else if (planet.textIndex == 6)
+    {
+        color = GetGanyTexture(frag.original.x * 75 * 5, frag.original.y * 75 * 5, frag.original.z * 75 * 5);
+        planet.setBoundings(frag);
+    }
     else
     {
         color = Color(210, 210, 210);
@@ -60,7 +65,12 @@ Fragment fragmentShader(Fragment &frag, Satelite &planet)
     }
     else if (planet.textIndex == 5)
     {
-        color = GetMarsTexture(frag.original.x * 75 * 20, frag.original.y * 75 * 20, frag.original.z * 75 * 20);
+        color = GetMarsTexture(frag.original.x * 75 * 5, frag.original.y * 75 * 5, frag.original.z * 75 * 5);
+        planet.setBoundings(frag);
+    }
+    else if (planet.textIndex == 6)
+    {
+        color = GetGanyTexture(frag.original.x * 75 * 5, frag.original.y * 75 * 5, frag.original.z * 75 * 5);
         planet.setBoundings(frag);
     }
     else

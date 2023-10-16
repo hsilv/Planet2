@@ -82,7 +82,7 @@ Star setSystem(std::vector<glm::vec3> vertexes,
   Jool.satelites.push_back(JoolSat1);
 
   glm::vec3 scaleJoolSat2 = glm::vec3(0.65f, 0.65f, 0.65f);
-  Satelite JoolSat2 = Satelite(2, vertexes, originals, normals, globalTranslate, scaleJoolSat2, globalRotate, Color(178, 171, 153), angle);
+  Satelite JoolSat2 = Satelite(6, vertexes, originals, normals, globalTranslate, scaleJoolSat2, globalRotate, Color(178, 171, 153), angle);
   JoolSat2.axisX = 7.0f;
   JoolSat2.axisY = 9.0f;
   JoolSat2.angularSpeed = 0.064f;
