@@ -33,6 +33,10 @@ Muestra de selección y Warping a los planetas:
 
 ![](https://github.com/hsilv/Planet2/blob/main/Select.gif)
 
+Perspectiva de un objeto centrado con respecto a su sistema
+
+![](https://github.com/hsilv/Planet2/blob/main/Perspective.gif)
+
 ## Control de Cámara
 
 ### Modo Cangrejo
