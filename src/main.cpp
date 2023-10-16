@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
         case SDL_KEYDOWN:
           switch (event.key.keysym.sym)
           {
-          case SDLK_UP:
+          case SDLK_DOWN:
             eye.z += 0.05f;
             center.z += 0.05f;
             if (planetIndex >= 0)
@@ -129,7 +129,7 @@ int main(int argc, char *argv[])
             resetOrbits();
             break;
 
-          case SDLK_DOWN:
+          case SDLK_UP:
             eye.z -= 0.05f;
             center.z -= 0.05f;
             if (planetIndex >= 0)
