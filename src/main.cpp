@@ -14,6 +14,7 @@
 #include "framebuffer/framebuffer.h"
 #include "tex/tex.h"
 #include "SolarSys/set.hpp"
+#include "Noises/mars.hpp"
 
 float angle = 3.14f / 3.0f;
 Uniforms uniform;
@@ -66,6 +67,7 @@ void setTextures()
   setEarthSystemNoise(rand(), rand(), rand());
   SetJupiterNoise();
   setSunNoise(rand());
+  setMarsNoise();
 }
 
 void resetOrbits()

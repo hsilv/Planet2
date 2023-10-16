@@ -15,6 +15,7 @@ Vertex vertexShader(const Vertex &vertex, const Uniforms &uniforms)
     glm::mat4 MVP = uniforms.projection * uniforms.view * uniforms.model.resultant;
     glm::vec4 transformedVertex = MVP * glm::vec4(vertex.position.x, vertex.position.y, vertex.position.z, 1.0f);
 
+    /* ESTA ES LA CONDICIÓN QUE NO RENDERIZA DIRECTAMENTE LO QUE ESTÉ DEMASIADO CERCA O PASE DETRÁS DE LA CÁMARA POR LO QUE YA SE PODRÁ ACERCAR A CUALQUIER DISTANCIA SIN AFECTAR EN DEMASÍA EL RENDIMIENTO*/
     if (transformedVertex.w <= -2.0f)
     {
         return Vertex{

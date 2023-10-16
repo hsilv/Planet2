@@ -43,7 +43,7 @@ Star setSystem(std::vector<glm::vec3> vertexes,
   sun.planets.push_back(earth);
 
   glm::vec3 scaleVenus = glm::vec3(0.8f, 0.8f, 0.8f);
-  Planet venus = Planet(2, vertexes, originals, normals, globalTranslate, scaleVenus, globalRotate, Color(195, 102, 49), angle);
+  Planet venus = Planet(5, vertexes, originals, normals, globalTranslate, scaleVenus, globalRotate, Color(195, 102, 49), angle);
   venus.axisX = 10.25f;
   venus.axisY = 10.8f;
   venus.angularSpeed = 0.045f;
