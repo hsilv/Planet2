@@ -64,7 +64,7 @@ Star setSystem(std::vector<glm::vec3> vertexes,
   sun.planets.push_back(venus);
 
   glm::vec3 scaleJool = glm::vec3(2.0f, 2.0f, 2.0f);
-  Planet Jool = Planet(2, vertexes, originals, normals, globalTranslate, scaleJool, globalRotate, Color(122, 173, 84), angle);
+  Planet Jool = Planet(3, vertexes, originals, normals, globalTranslate, scaleJool, globalRotate, Color(122, 173, 84), angle);
   Jool.axisX = 50.25f;
   Jool.axisY = 50.25f;
   Jool.angularSpeed = 0.01f;
