@@ -76,3 +76,10 @@ También posee un comportamiento especial, una vez pasado cierto umbral en coord
 Se añadió una condición que no evita el acercamiento de la cámara a los objetos, si no los considera de una forma especial, siendo capaces estos de ser atravesados sin afectar demasiado el rendimiento, se hizo un clip trasero a la cámara con distancia de 1.5f desde adelante hacia atrás, es decir cualquier vértice que esté desde 1.5f hacia atrás de la cámara, no se renderizará.
 
 Por otro lado, las órbitas se borran al cambiar de perspectiva de cámara, esto debido a que se debe limpiar la órbita anterior para que no parezca sucio.
+
+### Rendimiento
+
+Debido a la calidad de keyframes de los GIF's no se muestra su rendimiento real, el cual es un aproximado de 30fps hacia arriba a distancia media y 10fps cerca de los objetos.
+
+![](https://github.com/hsilv/Planet2/blob/main/FPS.png)
+
